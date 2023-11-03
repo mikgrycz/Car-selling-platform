@@ -35,3 +35,4 @@ if __name__ == "__main__":
     print("Password: ")
     password = input()
     print("Logging in...")
+    mycursor.close()
