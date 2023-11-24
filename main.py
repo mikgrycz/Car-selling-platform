@@ -1,3 +1,14 @@
+from Car import Car
+from Client import Client
+from Message import Message
+from Review import Review
+from Transaction import Transaction
+from SuperUser import SuperUser
+from datetime import datetime
+import mysql.connector
+import os
+from os.path import join, dirname
+import sys
 from fastapi import FastAPI, HTTPException, Depends, status
 from pydantic import BaseModel
 from typing import Annotated
@@ -7,9 +18,20 @@ from sqlalchemy.orm import Session
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from Database import Base
-
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 Models.Base.metadata.create_all(bind=engine)
+origins = [
+    "http://localhost:3000",
+    "localhost:3000"
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["POST", "GET", "DELETE"],
+    allow_headers=["*"],
+)
 class PostBase(BaseModel):
     title: str
     content: str
@@ -18,6 +40,8 @@ class PostBase(BaseModel):
 class UserBase(BaseModel):
     username: str
 
+
+
 def get_db():
     db = SessionLocal()
     try:
@@ -25,65 +49,9 @@ def get_db():
     finally:
         db.close()
 
-class Car(Base):
-    __tablename__ = "Car"
-    CarID = Column(Integer, primary_key=True, index=True)
-    Brand = Column(String(255))
-    Model = Column(String(255))
-    Year = Column(Integer)
-    Mileage = Column(Integer)
-    Color = Column(String(255))
-    Price = Column(Integer)
-    Description = Column(String(255))
-    reviews = relationship("Review", back_populates="car")
-    transactions = relationship("Transaction", back_populates="car")
-
-
-class Client(Base):
-    __tablename__ = "Client"
-    ClientID = Column(Integer, primary_key=True, index=True)
-    Name = Column(String(255))
-    Email = Column(String(255))
-    Password = Column(String(255))
-    reviews = relationship("Review", back_populates="client")
-    messages = relationship("Message", back_populates="client")
-    transactions = relationship("Transaction", back_populates="client")
-
-class Review(Base):
-    __tablename__ = "Review"
-    ReviewID = Column(Integer, primary_key=True, index=True)
-    Rating = Column(Integer)
-    Comment = Column(String(255))
-    CarID = Column(Integer, ForeignKey('Car.CarID'))
-    ClientID = Column(Integer, ForeignKey('Client.ClientID'))
-    car = relationship("Car", back_populates="reviews")
-    client = relationship("Client", back_populates="reviews")
-
-class Message(Base):
-    __tablename__ = "Message"
-    MessageID = Column(Integer, primary_key=True, index=True)
-    Content = Column(String(255))
-    Date = Column(DateTime)
-    ClientID = Column(Integer, ForeignKey('Client.ClientID'))
-    client = relationship("Client", back_populates="messages")
-
-class Transaction(Base):
-    __tablename__ = "Transaction"
-    TransactionID = Column(Integer, primary_key=True, index=True)
-    Date = Column(DateTime)
-    CarID = Column(Integer, ForeignKey('Car.CarID'))
-    ClientID = Column(Integer, ForeignKey('Client.ClientID'))
-    car = relationship("Car", back_populates="transactions")
-    client = relationship("Client", back_populates="transactions")
-
-class SuperUser(Base):
-    __tablename__ = "SuperUser"
-    SuperUserID = Column(Integer, primary_key=True, index=True)
-    Name = Column(String(255))
-    Email = Column(String(255))
-    Password = Column(String(255))
 
 db_dependency = Annotated[Session, Depends(get_db)]
+Models.Base.metadata.create_all(bind=engine)
 @app.post("/posts/", status_code=status.HTTP_201_CREATED)
 async def create_post(post: PostBase, db: db_dependency):
     db_post = Models.Post(**post.model_dump())
@@ -118,17 +86,132 @@ async def get_user(user_id: int, db: db_dependency):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return db_user
 
-from Car import Car
-from Client import Client
-from Message import Message
-from Review import Review
-from Transaction import Transaction
-from SuperUser import SuperUser
-from datetime import datetime
-import mysql.connector
-import os
-from os.path import join, dirname
-import sys
+@app.get("/users/", status_code=status.HTTP_200_OK)
+async def get_users(db: db_dependency):
+    db_users = db.query(Models.User).all()
+    return db_users
+
+# @app.post("/cars/", status_code=status.HTTP_201_CREATED)
+# async def create_car(car: Car):
+    
+#     pass
+
+# @app.get("/cars/{car_id}", status_code=status.HTTP_200_OK)
+# async def get_car(car_id: int):
+#     # Code to get a car by ID
+#     pass
+
+# @app.put("/cars/{car_id}", status_code=status.HTTP_200_OK)
+# async def update_car(car_id: int, car: Car):
+#     # Code to update a car by ID
+#     pass
+
+# @app.delete("/cars/{car_id}", status_code=status.HTTP_200_OK)
+# async def delete_car(car_id: int):
+#     # Code to delete a car by ID
+#     pass
+
+# @app.post("/clients/", status_code=status.HTTP_201_CREATED)
+# async def create_client(client: Client):
+#     # Code to create a client
+#     pass
+
+# @app.get("/clients/{client_id}", status_code=status.HTTP_200_OK)
+# async def get_client(client_id: int):
+#     # Code to get a client by ID
+#     pass
+
+# @app.put("/clients/{client_id}", status_code=status.HTTP_200_OK)
+# async def update_client(client_id: int, client: Client):
+#     # Code to update a client by ID
+#     pass
+
+# @app.delete("/clients/{client_id}", status_code=status.HTTP_200_OK)
+# async def delete_client(client_id: int):
+#     # Code to delete a client by ID
+#     pass
+
+# @app.post("/messages/", status_code=status.HTTP_201_CREATED)
+# async def create_message(message: Message):
+#     # Code to create a message
+#     pass
+
+# @app.get("/messages/{message_id}", status_code=status.HTTP_200_OK)
+# async def get_message(message_id: int):
+#     # Code to get a message by ID
+#     pass
+
+# @app.put("/messages/{message_id}", status_code=status.HTTP_200_OK)
+# async def update_message(message_id: int, message: Message):
+#     # Code to update a message by ID
+#     pass
+
+# @app.delete("/messages/{message_id}", status_code=status.HTTP_200_OK)
+# async def delete_message(message_id: int):
+#     # Code to delete a message by ID
+#     pass
+
+# @app.post("/reviews/", status_code=status.HTTP_201_CREATED)
+# async def create_review(review: Review):
+#     # Code to create a review
+#     pass
+
+# @app.get("/reviews/{review_id}", status_code=status.HTTP_200_OK)
+# async def get_review(review_id: int):
+#     # Code to get a review by ID
+#     pass
+
+# @app.put("/reviews/{review_id}", status_code=status.HTTP_200_OK)
+# async def update_review(review_id: int, review: Review):
+#     # Code to update a review by ID
+#     pass
+
+# @app.delete("/reviews/{review_id}", status_code=status.HTTP_200_OK)
+# async def delete_review(review_id: int):
+#     # Code to delete a review by ID
+#     pass
+
+# @app.post("/transactions/", status_code=status.HTTP_201_CREATED)
+# async def create_transaction(transaction: Transaction):
+#     # Code to create a transaction
+#     pass
+
+# @app.get("/transactions/{transaction_id}", status_code=status.HTTP_200_OK)
+# async def get_transaction(transaction_id: int):
+#     # Code to get a transaction by ID
+#     pass
+
+# @app.put("/transactions/{transaction_id}", status_code=status.HTTP_200_OK)
+# async def update_transaction(transaction_id: int, transaction: Transaction):
+#     # Code to update a transaction by ID
+#     pass
+
+# @app.delete("/transactions/{transaction_id}", status_code=status.HTTP_200_OK)
+# async def delete_transaction(transaction_id: int):
+#     # Code to delete a transaction by ID
+#     pass
+
+# @app.post("/superusers/", status_code=status.HTTP_201_CREATED)
+# async def create_superuser(superuser: SuperUser):
+#     # Code to create a superuser
+#     pass
+
+# @app.get("/superusers/{superuser_id}", status_code=status.HTTP_200_OK)
+# async def get_superuser(superuser_id: int):
+#     # Code to get a superuser by ID
+#     pass
+
+# @app.put("/superusers/{superuser_id}", status_code=status.HTTP_200_OK)
+# async def update_superuser(superuser_id: int, superuser: SuperUser):
+#     # Code to update a superuser by ID
+#     pass
+
+# @app.delete("/superusers/{superuser_id}", status_code=status.HTTP_200_OK)
+# async def delete_superuser(superuser_id: int):
+#     # Code to delete a superuser by ID
+#     pass
+
+
 #import .env file variables
 from dotenv import load_dotenv, find_dotenv
 if __name__ == "__main__":
