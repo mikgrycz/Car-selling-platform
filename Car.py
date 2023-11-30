@@ -1,20 +1,27 @@
-class Car:
-    CarID = 0
-    Make = ""
-    Model = ""
-    Year = 0
-    Price = 0
-    Mileage = 0
-    Description = ""
-    SellerID = 0
-    def GetCarDetails():
-        print("CarID: " + str(Car.CarID) + "\nMake: " + Car.Make + "\nModel: " + Car.Model + "\nYear: " + str(Car.Year) + "\nPrice: " + str(Car.Price) + "\nMileage: " + str(Car.Mileage) + "\nDescription: " + Car.Description + "\nSellerID: " + str(Car.SellerID) + "\n")
-    def SetCarDetails(CarID, Make, Model, Year, Price, Mileage, Description, SellerID):
-        Car.CarID = CarID
-        Car.Make = Make
-        Car.Model = Model
-        Car.Year = Year
-        Car.Price = Price
-        Car.Mileage = Mileage
-        Car.Description = Description
-        Car.SellerID = SellerID
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from Database import Base
+
+class Car(Base):
+    __tablename__ = 'cars'
+    CarID = Column(Integer, primary_key=True)
+    Make = Column(String(255))
+    Model = Column(String(255))
+    Year = Column(Integer)
+    Price = Column(Integer)
+    Mileage = Column(Integer)
+    Description = Column(String(255))
+    SellerID = Column(Integer)
+
+    def GetCarDetails(self):
+        print("CarID: " + str(self.CarID) + "\nMake: " + self.Make + "\nModel: " + self.Model + "\nYear: " + str(self.Year) + "\nPrice: " + str(self.Price) + "\nMileage: " + str(self.Mileage) + "\nDescription: " + self.Description + "\nSellerID: " + str(self.SellerID) + "\n")
+
+    def SetCarDetails(self, CarID, Make, Model, Year, Price, Mileage, Description, SellerID):
+        self.CarID = CarID
+        self.Make = Make
+        self.Model = Model
+        self.Year = Year
+        self.Price = Price
+        self.Mileage = Mileage
+        self.Description = Description
+        self.SellerID = SellerID

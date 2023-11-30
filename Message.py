@@ -1,14 +1,23 @@
-from Client import Client
+from User import User
 from datetime import datetime
-class Message:
-    MessageID = 0
-    Sender = Client()
-    Receipient = Client()
-    Content = ""
-    TimeStamp = datetime.now()
+from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy.ext.declarative import declarative_base
+from Database import Base
+
+class Message(Base):
+    __tablename__ = 'messages'
+
+    MessageID = Column(Integer, primary_key=True)
+    Sender = Column(String(255))
+    Recipient = Column(String(255))
+    Content = Column(String(255))
+    TimeStamp = Column(DateTime, default=datetime.now)
+
     def SendMessage(self):
         print("Send Message")
+
     def ReceiveMessage(self):
         print("Receive Message")
+
     def DeleteMessage(self):
         print("Delete Message")

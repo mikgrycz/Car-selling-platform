@@ -1,7 +1,17 @@
-# singleton class for super user
-from Client import Client
-class SuperUser(Client):   #### SINGLETON #####
+# singleton class for super User
+from User import User
+from Car import Car
+from Database import Base
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import ForeignKey
+class SuperUser(User):   #### SINGLETON #####
     __instance = None
+    __tablename__ = 'SuperUser'
+    id = Column(Integer, ForeignKey('Users.UserID'), primary_key=True)
+    name = Column(String(255))
+    password = Column(String(255))
+    email = Column(String(255))
 
     @staticmethod
     def getInstance():
@@ -16,14 +26,22 @@ class SuperUser(Client):   #### SINGLETON #####
             raise Exception("This class is a singleton!")
         else:
             SuperUser.__instance = self
-            self.__name = "SuperUser"
-            self.__password = "SuperUser"
-            self.__email = "support@shop.com"
+            self.name = "SuperUser"
+            self.password = "SuperUser"
+            self.email = "support@shop.com"
+            self.engine = create_engine('sqlite:///database.db')
+            Base.metadata.create_all(self.engine)
+            Session = sessionmaker(bind=self.engine)
+            self.session = Session()
+
     def ListCarForSale(self):
         print("List Car For Sale")
+
     def RemoveCarFromSale(self):
         print("Remove Car From Sale")
+
     def EditCarListing(self):
         print("Edit Car Details")
+
     def ViewUserProfile(UserID):
         print("View User Profile")

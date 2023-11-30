@@ -18,11 +18,11 @@ const App = () => {
     price: ''
   })
   const fetchCars = async() => {
-      const response = await api.get('/users/');
+      const response = await api.get('/Users/');
 
   }
   useEffect(() => {
-   // api.get('/users').then(response => {
+   // api.get('/Users').then(response => {
    //   setCars(response.data)
    // })
     fetchCars()
@@ -37,7 +37,7 @@ const App = () => {
   };
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    await api.post('/users/', fromData);
+    await api.post('/Users/', fromData);
     fetchCars();
     setFormData({
       name: '',

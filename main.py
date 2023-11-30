@@ -1,8 +1,8 @@
 from Car import Car
-from Client import Client
+from User import User
 from Message import Message
 from Review import Review
-from Transaction import Transaction
+from Transaction import Transaction, RealTransaction, ProxyTransaction
 from SuperUser import SuperUser
 from datetime import datetime
 import mysql.connector
@@ -32,13 +32,7 @@ app.add_middleware(
     allow_methods=["POST", "GET", "DELETE"],
     allow_headers=["*"],
 )
-class PostBase(BaseModel):
-    title: str
-    content: str
-    user_id: int
 
-class UserBase(BaseModel):
-    username: str
 
 
 
@@ -52,44 +46,44 @@ def get_db():
 
 db_dependency = Annotated[Session, Depends(get_db)]
 Models.Base.metadata.create_all(bind=engine)
-@app.post("/posts/", status_code=status.HTTP_201_CREATED)
-async def create_post(post: PostBase, db: db_dependency):
-    db_post = Models.Post(**post.model_dump())
-    db.add(db_post)
-    db.commit()
+# @app.post("/posts/", status_code=status.HTTP_201_CREATED)
+# async def create_post(post: PostBase, db: db_dependency):
+#     db_post = Models.Post(**post.model_dump())
+#     db.add(db_post)
+#     db.commit()
 
-@app.get("/posts/{post_id}", status_code=status.HTTP_200_OK)
-async def get_post(post_id: int, db: db_dependency):
-    db_post = db.query(Models.Post).filter(Models.Post.id == post_id).first()
-    if db_post is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    return db_post
+# @app.get("/posts/{post_id}", status_code=status.HTTP_200_OK)
+# async def get_post(post_id: int, db: db_dependency):
+#     db_post = db.query(Models.Post).filter(Models.Post.id == post_id).first()
+#     if db_post is None:
+#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+#     return db_post
 
-@app.post("/users/", status_code=status.HTTP_201_CREATED)
-async def create_user(user: UserBase, db: db_dependency):
-    db_user = Models.User(**user.model_dump())
-    db.add(db_user)
-    db.commit()
+# @app.post("/Users/", status_code=status.HTTP_201_CREATED)
+# async def create_User(User: UserBase, db: db_dependency):
+#     db_User = Models.User(**User.model_dump())
+#     db.add(db_User)
+#     db.commit()
 
-@app.delete("/posts/{post_id}", status_code=status.HTTP_200_OK)
-async def delete_post(post_id: int, db: db_dependency):
-    db_post = db.query(Models.Post).filter(Models.Post.id == post_id).first()
-    if db_post is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Post not found")
-    db.delete(db_post)
-    db.commit()
+# @app.delete("/posts/{post_id}", status_code=status.HTTP_200_OK)
+# async def delete_post(post_id: int, db: db_dependency):
+#     db_post = db.query(Models.Post).filter(Models.Post.id == post_id).first()
+#     if db_post is None:
+#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Post not found")
+#     db.delete(db_post)
+#     db.commit()
 
-@app.get("/users/{user_id}", status_code=status.HTTP_200_OK)
-async def get_user(user_id: int, db: db_dependency):
-    db_user = db.query(Models.User).filter(Models.User.id == user_id).first()
-    if db_user is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    return db_user
+# @app.get("/Users/{User_id}", status_code=status.HTTP_200_OK)
+# async def get_User(User_id: int, db: db_dependency):
+#     db_User = db.query(Models.User).filter(Models.User.id == User_id).first()
+#     if db_User is None:
+#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+#     return db_User
 
-@app.get("/users/", status_code=status.HTTP_200_OK)
-async def get_users(db: db_dependency):
-    db_users = db.query(Models.User).all()
-    return db_users
+# @app.get("/Users/", status_code=status.HTTP_200_OK)
+# async def get_Users(db: db_dependency):
+#     db_Users = db.query(Models.User).all()
+#     return db_Users
 
 # @app.post("/cars/", status_code=status.HTTP_201_CREATED)
 # async def create_car(car: Car):
@@ -111,24 +105,24 @@ async def get_users(db: db_dependency):
 #     # Code to delete a car by ID
 #     pass
 
-# @app.post("/clients/", status_code=status.HTTP_201_CREATED)
-# async def create_client(client: Client):
-#     # Code to create a client
+# @app.post("/Users/", status_code=status.HTTP_201_CREATED)
+# async def create_User(User: User):
+#     # Code to create a User
 #     pass
 
-# @app.get("/clients/{client_id}", status_code=status.HTTP_200_OK)
-# async def get_client(client_id: int):
-#     # Code to get a client by ID
+# @app.get("/Users/{User_id}", status_code=status.HTTP_200_OK)
+# async def get_User(User_id: int):
+#     # Code to get a User by ID
 #     pass
 
-# @app.put("/clients/{client_id}", status_code=status.HTTP_200_OK)
-# async def update_client(client_id: int, client: Client):
-#     # Code to update a client by ID
+# @app.put("/Users/{User_id}", status_code=status.HTTP_200_OK)
+# async def update_User(User_id: int, User: User):
+#     # Code to update a User by ID
 #     pass
 
-# @app.delete("/clients/{client_id}", status_code=status.HTTP_200_OK)
-# async def delete_client(client_id: int):
-#     # Code to delete a client by ID
+# @app.delete("/Users/{User_id}", status_code=status.HTTP_200_OK)
+# async def delete_User(User_id: int):
+#     # Code to delete a User by ID
 #     pass
 
 # @app.post("/messages/", status_code=status.HTTP_201_CREATED)
@@ -191,24 +185,24 @@ async def get_users(db: db_dependency):
 #     # Code to delete a transaction by ID
 #     pass
 
-# @app.post("/superusers/", status_code=status.HTTP_201_CREATED)
-# async def create_superuser(superuser: SuperUser):
-#     # Code to create a superuser
+# @app.post("/superUsers/", status_code=status.HTTP_201_CREATED)
+# async def create_superUser(superUser: SuperUser):
+#     # Code to create a superUser
 #     pass
 
-# @app.get("/superusers/{superuser_id}", status_code=status.HTTP_200_OK)
-# async def get_superuser(superuser_id: int):
-#     # Code to get a superuser by ID
+# @app.get("/superUsers/{superUser_id}", status_code=status.HTTP_200_OK)
+# async def get_superUser(superUser_id: int):
+#     # Code to get a superUser by ID
 #     pass
 
-# @app.put("/superusers/{superuser_id}", status_code=status.HTTP_200_OK)
-# async def update_superuser(superuser_id: int, superuser: SuperUser):
-#     # Code to update a superuser by ID
+# @app.put("/superUsers/{superUser_id}", status_code=status.HTTP_200_OK)
+# async def update_superUser(superUser_id: int, superUser: SuperUser):
+#     # Code to update a superUser by ID
 #     pass
 
-# @app.delete("/superusers/{superuser_id}", status_code=status.HTTP_200_OK)
-# async def delete_superuser(superuser_id: int):
-#     # Code to delete a superuser by ID
+# @app.delete("/superUsers/{superUser_id}", status_code=status.HTTP_200_OK)
+# async def delete_superUser(superUser_id: int):
+#     # Code to delete a superUser by ID
 #     pass
 
 
@@ -219,14 +213,14 @@ if __name__ == "__main__":
     # load_dotenv()
     # mydb = mysql.connector.connect(
     # host = "localhost",
-    # user = "root",
+    # User = "root",
     # password = os.getenv('mysql')
     # )
     # mycursor = mydb.cursor()
     # mycursor.execute("CREATE DATABASE IF NOT EXISTS CarTradingSystem")
     # mycursor.execute("USE CarTradingSystem")
     # mycursor.execute("CREATE TABLE IF NOT EXISTS Car (CarID INT AUTO_INCREMENT PRIMARY KEY, Brand VARCHAR(255), Model VARCHAR(255), Year INT, Mileage INT, Color VARCHAR(255), Price INT, Description VARCHAR(255))")
-    # mycursor.execute("CREATE TABLE IF NOT EXISTS Client (ClientID INT AUTO_INCREMENT PRIMARY KEY, Name VARCHAR(255), Email VARCHAR(255), Password VARCHAR(255))")
+    # mycursor.execute("CREATE TABLE IF NOT EXISTS User (UserID INT AUTO_INCREMENT PRIMARY KEY, Name VARCHAR(255), Email VARCHAR(255), Password VARCHAR(255))")
     # mycursor.execute("CREATE TABLE IF NOT EXISTS Review (ReviewID INT AUTO_INCREMENT PRIMARY KEY, Rating INT, Comment VARCHAR(255), ReviewerID INT, CarID INT)")
     # mycursor.execute("CREATE TABLE IF NOT EXISTS Message (MessageID INT AUTO_INCREMENT PRIMARY KEY, SenderID INT, ReceipientID INT, Content VARCHAR(255), TimeStamp DATETIME)")
     # mycursor.execute("CREATE TABLE IF NOT EXISTS Transaction (TransactionID INT AUTO_INCREMENT PRIMARY KEY, BuyerID INT, SellerID INT, CarID INT, Price INT, TimeStamp DATETIME)")
@@ -234,7 +228,7 @@ if __name__ == "__main__":
     # print("Welcome to Car Trading System!")
     # print("Please login to continue")
     # print("Username: ")
-    # username = input()
+    # Username = input()
     # print("Password: ")
     # password = input()
     # print("Logging in...")
