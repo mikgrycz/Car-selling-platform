@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from Database import Base
 from User import User
 from Car import Car
-
+#from pydantic import BaseModel
 class Transaction(Base):
     __tablename__ = 'transactions'
 
@@ -70,11 +70,26 @@ class ProxyTransaction(Transaction):
         return self.sender == "SuperUser"
 
 # Create the database engine
-engine = create_engine('sqlite:///transactions.db', echo=True)
+# engine = create_engine('sqlite:///transactions.db', echo=True)
 
-# Create the tables
-Base.metadata.create_all(bind=engine)
+# # Create the tables
+# Base.metadata.create_all(bind=engine)
 
-# Create a session
-Session = sessionmaker(bind=engine)
-session = Session()
+# # Create a session
+# Session = sessionmaker(bind=engine)
+# session = Session()
+# class TransactionModel(BaseModel):
+#     id: int
+#     sender: str
+#     receiver: str
+#     amount: int
+
+# class RealTransactionModel(TransactionModel):
+#     TransactionID: int
+#     buyer: User
+#     seller: User
+#     car: Car
+#     date: str
+#     status: str
+# class ProxyTransactionModel(TransactionModel):
+#     pass

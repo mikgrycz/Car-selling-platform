@@ -4,7 +4,7 @@ from User import User
 from Car import Car
 from sqlalchemy.ext.declarative import declarative_base
 from Database import Base
-
+#from pydantic import BaseModel
 class Review(Base):
     __tablename__ = 'reviews'
     ReviewID = Column(Integer, primary_key=True)
@@ -23,3 +23,9 @@ class Review(Base):
 
     def DeleteReview(self):
         print("Delete Review")
+# class ReviewModel(BaseModel):
+#     ReviewID: int
+#     Rating: int
+#     Comment: str
+#     ReviewerID: int
+#     CarSoldID: int

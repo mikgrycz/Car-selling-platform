@@ -1,6 +1,6 @@
-from sqlalchemy import create_engine, Column, Integer, String
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
+#from pydantic import BaseModel
 from Database import Base
 
 class User(Base):
@@ -38,7 +38,11 @@ class User(Base):
     def contactSeller(carID):
         print("Contact Seller")
 
-# engine = create_engine('sqlite:///database.db')
-# Base.metadata.create_all(engine)
-# Session = sessionmaker(bind=engine)
-# session = Session()
+# class UserModel(BaseModel):
+#     UserID: int
+#     UserName: str
+#     UserPassword: str
+#     UserEmail: str
+#     UserPhone: str
+#     FirstName: str
+#     LastName: str

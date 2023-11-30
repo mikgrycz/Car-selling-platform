@@ -5,6 +5,7 @@ from Database import Base
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import ForeignKey
+#from pydantic import BaseModel
 class SuperUser(User):   #### SINGLETON #####
     __instance = None
     __tablename__ = 'SuperUser'
@@ -45,3 +46,11 @@ class SuperUser(User):   #### SINGLETON #####
 
     def ViewUserProfile(UserID):
         print("View User Profile")
+# class SuperUserModel(BaseModel):
+#     id: int
+#     name: str
+#     password: str
+#     email: str
+
+#     class Config:
+#         orm_mode = True
