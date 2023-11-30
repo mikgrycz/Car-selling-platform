@@ -10,7 +10,7 @@ class Review(Base):
     ReviewID = Column(Integer, primary_key=True)
     Rating = Column(Integer)
     Comment = Column(String(255))
-    ReviewerID = Column(Integer, ForeignKey('Users.UserID'))
+    ReviewerID = Column(Integer, ForeignKey('users.UserID'))
     Reviewer = relationship("User")
     CarSoldID = Column(Integer, ForeignKey('cars.CarID'))
     CarSold = relationship("Car")

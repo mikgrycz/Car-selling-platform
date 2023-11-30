@@ -8,8 +8,8 @@ from sqlalchemy import ForeignKey
 from pydantic import BaseModel
 class SuperUser(User):   #### SINGLETON #####
     __instance = None
-    __tablename__ = 'SuperUser'
-    id = Column(Integer, ForeignKey('Users.UserID'), primary_key=True)
+    __tablename__ = 'superuser'
+    id = Column(Integer, ForeignKey('users.UserID'), primary_key=True)
     name = Column(String(255))
     password = Column(String(255))
     email = Column(String(255))

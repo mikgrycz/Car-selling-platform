@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from Database import Base
 
 class User(Base):
-    __tablename__ = 'Users'
+    __tablename__ = 'users'
 
     UserID = Column(Integer, primary_key=True)
     UserName = Column(String(255))

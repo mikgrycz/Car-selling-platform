@@ -19,6 +19,7 @@ from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from Database import Base
 from fastapi.middleware.cors import CORSMiddleware
+from Listing import Listing, ListingModel
 app = FastAPI()
 Models.Base.metadata.create_all(bind=engine)
 origins = [
@@ -127,3 +128,14 @@ def create_superuser(superuser: SuperUserModel, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_superuser)
     return db_superuser
+@app.get("/listings")
+def get_listing(listing_id:ListingModel, db: Session = Depends(get_db)):
+    listing = db.query(Listing).filter(Listing.listing_id == listing_id)
+    return listing
+@app.post("/listings")
+def create_listing(listing: ListingModel, db: Session = Depends(get_db)):
+    db_listing = Listing(**listing.model_dump())
+    db.add(db_listing)
+    db.commit()
+    db.refresh(db_listing)
+    return db_listing
