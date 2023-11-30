@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from Car import Car
 from User import User
 
-class Listing(Base): # Base is the declarative base from database.py
+class Listing(Base): # Base is the declarative base from database.py  python
     __tablename__ = 'listings'
     subject_id = Column(Integer, ForeignKey('cars.CarID'))
     subject = relationship("Car")
