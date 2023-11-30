@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from Database import Base
 from User import User
 from Car import Car
-#from pydantic import BaseModel
+from pydantic import BaseModel
 class Transaction(Base):
     __tablename__ = 'transactions'
 
@@ -78,11 +78,11 @@ class ProxyTransaction(Transaction):
 # # Create a session
 # Session = sessionmaker(bind=engine)
 # session = Session()
-# class TransactionModel(BaseModel):
-#     id: int
-#     sender: str
-#     receiver: str
-#     amount: int
+class TransactionModel(BaseModel):
+    id: int
+    sender: str
+    receiver: str
+    amount: int
 
 # class RealTransactionModel(TransactionModel):
 #     TransactionID: int
@@ -93,3 +93,4 @@ class ProxyTransaction(Transaction):
 #     status: str
 # class ProxyTransactionModel(TransactionModel):
 #     pass
+# inheritance doesnt work here

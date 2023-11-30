@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
-#from pydantic import BaseModel
+from pydantic import BaseModel
 from Database import Base
 
 class User(Base):
@@ -38,11 +38,11 @@ class User(Base):
     def contactSeller(carID):
         print("Contact Seller")
 
-# class UserModel(BaseModel):
-#     UserID: int
-#     UserName: str
-#     UserPassword: str
-#     UserEmail: str
-#     UserPhone: str
-#     FirstName: str
-#     LastName: str
+class UserModel(BaseModel):
+    UserID: int
+    UserName: str
+    UserPassword: str
+    UserEmail: str
+    UserPhone: str
+    FirstName: str
+    LastName: str

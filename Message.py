@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from Database import Base
-#from pydantic import BaseModel
+from pydantic import BaseModel
 
 class Message(Base):
     __tablename__ = 'messages'
@@ -22,9 +22,9 @@ class Message(Base):
 
     def DeleteMessage(self):
         print("Delete Message")
-# class MessageModel(BaseModel):
-#     MessageID: int
-#     Sender: str
-#     Recipient: str
-#     Content: str
-#     TimeStamp: datetime
+class MessageModel(BaseModel):
+    MessageID: int
+    Sender: str
+    Recipient: str
+    Content: str
+    TimeStamp: datetime

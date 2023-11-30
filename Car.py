@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from Database import Base
-#from pydantic import BaseModel
+from pydantic import BaseModel
 
 class Car(Base):
     __tablename__ = 'cars'
@@ -27,12 +27,12 @@ class Car(Base):
         self.Description = Description
         self.SellerID = SellerID
 
-# class CarModel(BaseModel):
-#     CarID: int
-#     Make: str
-#     Model: str
-#     Year: int
-#     Price: int
-#     Mileage: int
-#     Description: str
-#     SellerID: int
+class CarModel(BaseModel):
+    CarID: int
+    Make: str
+    Model: str
+    Year: int
+    Price: int
+    Mileage: int
+    Description: str
+    SellerID: int

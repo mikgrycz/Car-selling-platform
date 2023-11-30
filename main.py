@@ -1,9 +1,9 @@
-from Car import Car
-from User import User
-from Message import Message
-from Review import Review
-from Transaction import Transaction, RealTransaction, ProxyTransaction
-from SuperUser import SuperUser
+from Car import Car, CarModel
+from User import User, UserModel
+from Message import Message, MessageModel
+from Review import Review, ReviewModel
+from Transaction import Transaction, TransactionModel
+from SuperUser import SuperUser, SuperUserModel
 from datetime import datetime
 import mysql.connector
 import os
@@ -81,18 +81,49 @@ def get_superusers(db: Session = Depends(get_db)):
     superusers = db.query(SuperUser).all()
     return superusers
 
-# @app.post("/users")
-# def create_user(user: UserModel, db: Session = Depends(get_db)):
-#     db_user = User(**user.model_dump())
-#     db.add(db_user)
-#     db.commit()
-#     db.refresh(db_user)
-#     return db_user
+@app.post("/users")
+def create_user(user: UserModel, db: Session = Depends(get_db)):
+    db_user = User(**user.model_dump())
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
 
-# @app.post("/users")
-# def add_user(user: User, db: Session = Depends(get_db)):
-#     db.add(user)
-#     db.commit()
-#     db.refresh(user)
-#     return user
+@app.post("/cars")
+def create_car(car: CarModel, db: Session = Depends(get_db)):
+    db_car = Car(**car.model_dump())
+    db.add(db_car)
+    db.commit()
+    db.refresh(db_car)
+    return db_car
+@app.post("/messages")
+def create_message(message: MessageModel, db: Session = Depends(get_db)):
+    db_message = Message(**message.model_dump())
+    db.add(db_message)
+    db.commit()
+    db.refresh(db_message)
+    return db_message
 
+@app.post("/reviews")
+def create_review(review: ReviewModel, db: Session = Depends(get_db)):
+    db_review = Review(**review.model_dump())
+    db.add(db_review)
+    db.commit()
+    db.refresh(db_review)
+    return db_review
+
+@app.post("/transactions")
+def create_transaction(transaction: TransactionModel, db: Session = Depends(get_db)):
+    db_transaction = Transaction(**transaction.model_dump())
+    db.add(db_transaction)
+    db.commit()
+    db.refresh(db_transaction)
+    return db_transaction
+
+@app.post("/superusers")
+def create_superuser(superuser: SuperUserModel, db: Session = Depends(get_db)):
+    db_superuser = SuperUser(**superuser.model_dump())
+    db.add(db_superuser)
+    db.commit()
+    db.refresh(db_superuser)
+    return db_superuser
