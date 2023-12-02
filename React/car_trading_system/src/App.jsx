@@ -2,60 +2,29 @@ import React, { useState, useEffect } from 'react';
 import api from './api';
 import axios from 'axios';
 import { useSignIn } from 'react-auth-kit';
-
-const LoginForm = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const signIn = useSignIn;
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    const response = await axios.post('/token', {
-      username: username,
-      password: password,
-    });
-
-    if (response.data === null) {
-      return false;
-    }
-
-    signIn({
-      token: response.data.access_token,
-      expiresIn: 3600, // replace with actual expiration time
-      tokenType: response.data.token_type,
-      authState: {}, // replace with actual auth state
-    });
-  };
-
+import './App.css';
+function LoginForm() {
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        <span style={{ display: 'inline-block', width: '100px', textAlign: 'right', color: 'grey' }}>Username:</span>
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          style={{ width: '100px', marginLeft: '10px' }} // Adjusted width to 150px
-        />
-      </label>
-      
-      <label>
-        <span style={{ display: 'inline-block', width: '100px', textAlign: 'right', color: 'grey' }}>Password:</span>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={{ width: '100px', marginLeft: '10px' }} // Adjusted width to 150px
-        />
-      </label>
-      <br />
-      <input type="submit" value="Log In" style={{ float: 'right' }} />
+    <form className="login-form">
+      <input className="input-field" type="text" placeholder="Username" />
+      <input className="input-field" type="password" placeholder="Password" />
+      <button className="login-button" type="submit">Login</button>
     </form>
   );
-};
+}
 
 const App = () => {
+
+
+  useEffect(() => {
+    // Change the background color when the component mounts
+    document.body.style.backgroundColor = '#27282c';
+
+    // Reset the background color when the component unmounts
+    return () => {
+      document.body.style.backgroundColor = null;
+    };
+  }, []);
   const [cars, setCars] = useState([]);
   const [fromData, setFormData] = useState({
     name: '',
@@ -65,7 +34,7 @@ const App = () => {
   });
 
   const fetchCars = async () => {
-    const response = await api.get('/users/');
+    const response = await api.get('/users');
     setCars(response.data);
   };
 
@@ -83,7 +52,7 @@ const App = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    await api.post('/users/', fromData);
+    await api.post('/users', fromData);
     fetchCars();
     setFormData({
       name: '',
@@ -95,13 +64,13 @@ const App = () => {
 
   return (
     <div>
-      <nav className="navbar navbar-dark bg-dark ">
-        <div className="container-fluid">
-          <a className="navbar-brand" href="#"></a>
-          <LoginForm />
-        </div>
-      </nav>
-      <h1 style={{ textAlign: 'center' }}>Car Trading System</h1>
+<nav className="navbar navbar-custom">
+  <div className="container-fluid">
+    <a className="navbar-brand" href="#"></a>
+    <LoginForm />
+  </div>
+</nav>
+      <h1 className="logo">Car Trading System</h1>
       <ul>
         {/* {cars.map(car => (
           <li key={car.id}>{car.name}</li>
