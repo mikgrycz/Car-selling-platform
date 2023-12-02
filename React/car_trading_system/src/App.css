@@ -31,7 +31,23 @@
   justify-content: space-between;
   width: 100%;
 }
-
+@font-face {
+  font-family: "logoFont";
+  src: url("../../../font1/Blackout\ Sunrise.ttf");
+}
+/* .neon-text {
+  color: #ffffff;
+  text-shadow:
+    0 0 5px #ff0000,
+    0 0 10px #ff0000,
+    0 0 15px #ff0000,
+    0 0 20px #ff0000,
+    0 0 25px #ff0000,
+    0 0 30px #ff0000,
+    0 0 35px #ff0000;
+  font-size: 2em;
+  font-weight: bold;
+} */
 .login-button {
   background-color: #3d3d3d; /* Dark grey background */
   color: rgb(238, 238, 238); /* White text */
@@ -46,9 +62,12 @@
 }
 .logo {
   color: rgb(238, 238, 238);
+  font-family: "logoFont";
   font-weight: bold;
+  font-size: 1.6em;
   text-shadow: 2px 2px 3px #000, 3px 3px 5px rgba(0, 0, 0, 0.5);
-  text-align: center;
+  text-align: left;
+  
 }
 .navbar-custom {
   background: linear-gradient(to bottom right, rgb(152, 35, 241), #04b4a5);

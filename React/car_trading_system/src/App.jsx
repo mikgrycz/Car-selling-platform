@@ -67,10 +67,10 @@ const App = () => {
 <nav className="navbar navbar-custom">
   <div className="container-fluid">
     <a className="navbar-brand" href="#"></a>
+    <h1 className="logo">Car <br></br> Bazaar</h1> 
     <LoginForm />
   </div>
 </nav>
-      <h1 className="logo">Car Trading System</h1>
       <ul>
         {/* {cars.map(car => (
           <li key={car.id}>{car.name}</li>

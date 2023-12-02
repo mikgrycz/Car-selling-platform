@@ -13,6 +13,7 @@ class Car(Base):
     Mileage = Column(Integer)
     Description = Column(String(255))
     SellerID = Column(Integer)
+    PictureLink = Column(String(255))
 
     def GetCarDetails(self):
         print("CarID: " + str(self.CarID) + "\nMake: " + self.Make + "\nModel: " + self.Model + "\nYear: " + str(self.Year) + "\nPrice: " + str(self.Price) + "\nMileage: " + str(self.Mileage) + "\nDescription: " + self.Description + "\nSellerID: " + str(self.SellerID) + "\n")
@@ -36,3 +37,4 @@ class CarModel(BaseModel):
     Mileage: int
     Description: str
     SellerID: int
+    PictureLink: str
