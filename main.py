@@ -20,6 +20,8 @@ from sqlalchemy.orm import relationship
 from Database import Base
 from fastapi.middleware.cors import CORSMiddleware
 from Listing import Listing, ListingModel
+from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.security.oauth2 import OAuth2PasswordBearer
 app = FastAPI()
 Models.Base.metadata.create_all(bind=engine)
 origins = [
@@ -51,6 +53,13 @@ if __name__ == "__main__":
     print("Initiating...")
 
 # Define endpoints for each class
+
+
+@app.post("/token")
+async def login(form_data: OAuth2PasswordRequestForm = Depends()):
+    # Validate the user's credentials and return a token
+    # This is just a placeholder - you'll need to implement the actual logic
+    return {"access_token": "your_token", "token_type": "bearer"}
 
 @app.get("/cars")
 def get_cars(db: Session = Depends(get_db)):
