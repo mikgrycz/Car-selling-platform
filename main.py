@@ -76,7 +76,7 @@ def get_cars(db: Session = Depends(get_db)):
     return {"cars": [car.__dict__ for car in cars]}
 
 
-@app.get('/api/login')
+@app.post('/api/login')
 def login(username: str, password: str):
     db = SessionLocal()
     user = db.query(User).filter(User.username == username).first()
