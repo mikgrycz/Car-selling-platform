@@ -45,8 +45,8 @@
 
 
 .car-image {
-  width: 200px;  /* Adjust as needed */
-  height: 200px; /* Adjust as needed */
+  width: 250px;  /* Adjust as needed */
+  height: 250px; /* Adjust as needed */
   object-fit: cover;
 }
 .navbar-content {
@@ -59,7 +59,7 @@
   background: linear-gradient(to top, #3d3d3d, #242323);
   padding: 20px;
   margin: 20px;
-  width: 250px; /* Adjust as needed */
+  width: 300px; /* Adjust as needed */
   box-sizing: border-box;
   color: rgb(238, 238, 238);
   box-shadow: 0 10px 10px rgba(0,0,0,0.1);

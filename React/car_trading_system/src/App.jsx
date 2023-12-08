@@ -33,8 +33,9 @@ function CarGrid() {
   <img className="car-image" src={car.PictureLink} alt={`${car.Make} ${car.Model}`} />
   <h2>{car.Make} {car.Model}</h2>
   <p>Year: {car.Year}</p>
-  <p>Mileage: {car.Mileage}</p>
-  <p>Description: {car.Description}</p>
+  <p>Mileage: {car.Mileage + " KM"}</p>
+  <p>Price: {car.Price + " PLN"}</p>
+  <p>{car.Description}</p>
 </div>
       ))}
     </div>
