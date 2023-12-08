@@ -22,6 +22,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from Listing import Listing, ListingModel
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.security.oauth2 import OAuth2PasswordBearer
+
+
 app = FastAPI()
 Models.Base.metadata.create_all(bind=engine)
 origins = [
@@ -55,16 +57,34 @@ if __name__ == "__main__":
 # Define endpoints for each class
 
 
-@app.post("/token")
-async def login(form_data: OAuth2PasswordRequestForm = Depends()):
-    # Validate the user's credentials and return a token
-    # This is just a placeholder - you'll need to implement the actual logic
-    return {"access_token": "your_token", "token_type": "bearer"}
+# @app.post("/login")
+# def login(form_data: OAuth2PasswordRequestForm = Depends()):
+#     user = authenticate_user(form_data.username, form_data.password)
+#     if not user:
+#         raise HTTPException(
+#             status_code=status.HTTP_401_UNAUTHORIZED,
+#             detail="Invalid username or password"
+#         )
+#     # generate JWT token
+#     access_token = create_access_token(data={"sub": user.username})
+#     return {"access_token": access_token, "token_type": "bearer"}
 
 @app.get("/cars")
 def get_cars(db: Session = Depends(get_db)):
+    db = SessionLocal()
     cars = db.query(Car).all()
-    return cars
+    return {"cars": [car.__dict__ for car in cars]}
+
+
+@app.get('/api/login')
+def login(username: str, password: str):
+    db = SessionLocal()
+    user = db.query(User).filter(User.username == username).first()
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    if user.password != password:
+        raise HTTPException(status_code=404, detail="Incorrect password")
+    return user
 
 @app.get("/users")
 def get_users(db: Session = Depends(get_db)):
@@ -99,13 +119,13 @@ def create_user(user: UserModel, db: Session = Depends(get_db)):
     db.refresh(db_user)
     return db_user
 
-@app.post("/cars")
-def create_car(car: CarModel, db: Session = Depends(get_db)):
-    db_car = Car(**car.model_dump())
-    db.add(db_car)
-    db.commit()
-    db.refresh(db_car)
-    return db_car
+# @app.post("/cars")
+# def create_car(car: CarModel, db: Session = Depends(get_db)):
+#     db_car = Car(**car.model_dump())
+#     db.add(db_car)
+#     db.commit()
+#     db.refresh(db_car)
+#     return db_car
 @app.post("/messages")
 def create_message(message: MessageModel, db: Session = Depends(get_db)):
     db_message = Message(**message.model_dump())

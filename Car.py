@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from Database import Base
 from pydantic import BaseModel
-
+import os
 class Car(Base):
     __tablename__ = 'cars'
     CarID = Column(Integer, primary_key=True)
@@ -14,12 +14,12 @@ class Car(Base):
     Description = Column(String(255))
     SellerID = Column(Integer)
     PictureLink = Column(String(255))
-    Asaaaaaaaaaaaa = Column(String(255))
+    BodyType = Column(String(255))
 
     def GetCarDetails(self):
         print("CarID: " + str(self.CarID) + "\nMake: " + self.Make + "\nModel: " + self.Model + "\nYear: " + str(self.Year) + "\nPrice: " + str(self.Price) + "\nMileage: " + str(self.Mileage) + "\nDescription: " + self.Description + "\nSellerID: " + str(self.SellerID) + "\n")
 
-    def SetCarDetails(self, CarID, Make, Model, Year, Price, Mileage, Description, SellerID):
+    def SetCarDetails(self, CarID, Make, Model, Year, Price, Mileage, Description, SellerID, BodyType):
         self.CarID = CarID
         self.Make = Make
         self.Model = Model
@@ -28,6 +28,23 @@ class Car(Base):
         self.Mileage = Mileage
         self.Description = Description
         self.SellerID = SellerID
+        self.PictureLink = "../CarData/c" + str(CarID) + "/1.png"
+        self.BodyType = BodyType
+
+    def __init__(self, CarID, Make, Model, Year, Price, Mileage, Description, SellerID, BodyType):
+        # create new folder for car images c + carID in CarData
+        self.SetCarDetails(CarID, Make, Model, Year, Price, Mileage, Description, SellerID, BodyType)
+        folder_name = f"c{CarID}"
+        folder_path = os.path.join("CarData", folder_name)
+        os.makedirs(folder_path)
+
+    def __init__(self):
+        pass
+    # create new folder for car images c + carID in CarData
+        #folder_name = f"c000001"  #placeholder
+        #folder_path = os.path.join("CarData", folder_name)
+        #os.makedirs(folder_path)
+
 
 class CarModel(BaseModel):
     CarID: int
@@ -39,3 +56,4 @@ class CarModel(BaseModel):
     Description: str
     SellerID: int
     PictureLink: str
+    BodyType: str

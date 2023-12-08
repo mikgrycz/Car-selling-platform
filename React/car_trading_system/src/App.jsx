@@ -3,6 +3,9 @@ import api from './api';
 import axios from 'axios';
 import { useSignIn } from 'react-auth-kit';
 import './App.css';
+
+
+
 function LoginForm() {
   return (
     <form className="login-form">
@@ -12,6 +15,32 @@ function LoginForm() {
     </form>
   );
 }
+
+
+function CarGrid() {
+  const [cars, setCars] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:8000/cars')  // Update with your server's URL
+      .then(response => response.json())
+      .then(data => setCars(data.cars));
+  }, []);
+
+  return (
+    <div className="centered-content">
+      {cars.map(car => (
+        <div key={car.CarID} className="car-details">
+  <img className="car-image" src={car.PictureLink} alt={`${car.Make} ${car.Model}`} />
+  <h2>{car.Make} {car.Model}</h2>
+  <p>Year: {car.Year}</p>
+  <p>Mileage: {car.Mileage}</p>
+  <p>Description: {car.Description}</p>
+</div>
+      ))}
+    </div>
+  );
+}
+
 
 const App = () => {
 
@@ -25,59 +54,78 @@ const App = () => {
       document.body.style.backgroundColor = null;
     };
   }, []);
+
+
   const [cars, setCars] = useState([]);
-  const [fromData, setFormData] = useState({
-    name: '',
-    year: '',
-    model: '',
-    price: '',
-  });
-
-  const fetchCars = async () => {
-    const response = await api.get('/users');
-    setCars(response.data);
-  };
-
   useEffect(() => {
-    fetchCars();
+    fetch('http://localhost:8000/cars')  // Update with your server's URL
+      .then(response => response.json())
+      .then(data => setCars(data.cars));
   }, []);
 
-  const handleInputChange = (event) => {
-    const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
-    setFormData({
-      ...fromData,
-      [event.target.name]: value,
-    });
-  };
 
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
-    await api.post('/users', fromData);
-    fetchCars();
-    setFormData({
-      name: '',
-      year: '',
-      model: '',
-      price: '',
-    });
-  };
+  // return (
+  //   <div>
+  //     <nav className="navbar navbar-custom">
+  //       <div className="container-fluid">
+  //         <h1 className="logo">Car <br></br> Bazaar</h1>
+  //         <a className="navbar-brand" href="#"></a>
+  //         <LoginForm />
+  //       </div>
+  //     </nav>
+  //     <div>
+  //       <div>
+  //         <CarGrid />
+  //       </div>
+  //       {cars.map(car => (
+  //         <div key={car.CarID}>
+  //           <img src={car.PictureLink} alt={car.Make} />
+  //           <h2>{car.Make} {car.Model}</h2>
+  //           <p>{car.Description}</p>
+  //           {/* Add more car details here */}
+  //         </div>
+  //       ))}
+  //     </div>
+  //   </div>
+  // );
+  // };
 
-  return (
-    <div>
-<nav className="navbar navbar-custom">
-  <div className="container-fluid">
-    <a className="navbar-brand" href="#"></a>
-    <h1 className="logo">Car <br></br> Bazaar</h1> 
-    <LoginForm />
-  </div>
-</nav>
-      <ul>
-        {/* {cars.map(car => (
-          <li key={car.id}>{car.name}</li>
-        ))} */}
-      </ul>
+
+//   return (
+//     <div className="App">
+//       {/* Other components here */}
+//       <CarGrid />
+
+//       <div className="container">
+//         <div className="row">
+//           <div className="col-md-12">
+//             <h1 className="logo">Car <br></br> Bazaar</h1>
+//             <LoginForm />
+//           </div>
+//         </div>
+
+//         <div className="row">
+//           <div className="col-md-12">
+//             <CarGrid />
+//           </div>
+//     </div>
+//   </div>
+//     </div>
+//   );
+// };
+return (
+  <div>
+    <nav className="navbar navbar-custom">
+      <div className="container-fluid">
+        <h1 className="logo">Car <br></br> Bazaar</h1>
+        <a className="navbar-brand" href="#"></a>
+        <LoginForm />
+      </div>
+    </nav>
+    <div className="car-grid-container">
+      <CarGrid />
     </div>
-  );
+  </div>
+);
 };
-
 export default App;

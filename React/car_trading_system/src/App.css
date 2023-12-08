@@ -7,6 +7,23 @@
   pointer-events: none;
 }
 
+.centered-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.car-grid-container {
+  color: white;
+}
+.car-grid-container {
+  color: white;
+  display: flex;
+  justify-content: left;
+  align-items: left;
+  height: calc(100vh - 60px); /* Adjust according to your navbar's height */
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -26,11 +43,35 @@
   padding: 5px 10px;
 }
 
+
+.car-image {
+  width: 200px;  /* Adjust as needed */
+  height: 200px; /* Adjust as needed */
+  object-fit: cover;
+}
 .navbar-content {
   display: flex;
   justify-content: space-between;
   width: 100%;
 }
+
+.car-details {
+  background: linear-gradient(to top, #3d3d3d, #242323);
+  padding: 20px;
+  margin: 20px;
+  width: 250px; /* Adjust as needed */
+  box-sizing: border-box;
+  color: rgb(238, 238, 238);
+  box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+  border-radius: 10px; /* Add this line */
+  transition: transform 0.3s ease-in-out; /* Add this line */
+
+}
+
+.car-details:hover {
+  transform: scale(1.05); /* Add this line */
+}
+
 @font-face {
   font-family: "logoFont";
   src: url("../../../font1/Blackout\ Sunrise.ttf");
@@ -64,13 +105,14 @@
   color: rgb(238, 238, 238);
   font-family: "logoFont";
   font-weight: bold;
-  font-size: 1.6em;
+  font-size: 4em;
   text-shadow: 2px 2px 3px #000, 3px 3px 5px rgba(0, 0, 0, 0.5);
   text-align: left;
   
 }
 .navbar-custom {
-  background: linear-gradient(to bottom right, rgb(152, 35, 241), #04b4a5);
+  /* background: linear-gradient(to bottom right, rgb(152, 35, 241), #04b4a5); */
+  background: linear-gradient(to bottom right, rgb(108, 5, 193), #d4ee0c);
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   box-shadow: 
@@ -80,6 +122,7 @@
     0 8px 8px rgba(0,0,0,0.14), 
     0 16px 16px rgba(0,0,0,0.15); 
   transition: box-shadow 0.3s ease;
+  height: 20em;
 }
 
 .login-form {
