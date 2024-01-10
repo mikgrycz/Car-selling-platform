@@ -22,8 +22,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from Listing import Listing, ListingModel
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.security.oauth2 import OAuth2PasswordBearer
-
-
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 app = FastAPI()
 Models.Base.metadata.create_all(bind=engine)
 origins = [
@@ -32,9 +32,9 @@ origins = [
 ]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["POST", "GET", "DELETE"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
@@ -76,13 +76,17 @@ def get_cars(db: Session = Depends(get_db)):
     return {"cars": [car.__dict__ for car in cars]}
 
 
+class LoginData(BaseModel):
+    username: str
+    password: str
+
 @app.post('/api/login')
-def login(username: str, password: str):
+def login(data: LoginData):
     db = SessionLocal()
-    user = db.query(User).filter(User.username == username).first()
+    user = db.query(User).filter(User.UserName == data.username).first()
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    if user.password != password:
+    if user.UserPassword != data.password:
         raise HTTPException(status_code=404, detail="Incorrect password")
     return user
 

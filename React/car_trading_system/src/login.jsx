@@ -1,51 +1,72 @@
-import React, { useState } from 'react';
-import { useSignIn } from 'react-auth-kit';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function LoginForm() {
-  const [username, setUsername] = useState('');
+  const [username, setusername] = useState('');
   const [password, setPassword] = useState('');
-  const signIn = useSignIn();
+  const [user, setUser] = useState(null);
+  const handleLogout = () => {
+    setUser(null); // Clear the user's information from state
+    localStorage.removeItem('user'); // Clear the user's information from local storage
+    localStorage.removeItem('token'); // Clear the token from local storage
+  };
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem('user');
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);
+      setUser(foundUser);
+    }
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Call your API to get a token
-    const response = await fetch('/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    });
+    try {
+      const response = await axios.post('http://localhost:8000/api/login', {
+        username,
+        password,
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-    if (response.ok) {
-      const { token } = await response.json();
-
-      // Use the token to sign in
-      signIn({ token });
-    } else {
-      // Handle the error
-      console.error('Login failed');
+      if (response.status === 200) {
+        console.log('Login successful');
+        setUser(response.data); // Store the user's information
+        console.log(response.data); // Log the user's information
+        localStorage.setItem('user', JSON.stringify(response.data)); // Store the user's information in local storage
+        localStorage.setItem('token', response.data.token); // Store the token in local storage
+      } else {
+        console.error('Login failed');
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="login-form" onSubmit={handleSubmit}>
       <input
+        className="input-field"
         type="text"
         value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        placeholder="Username"
+        onChange={(e) => setusername(e.target.value)}
+        placeholder="username"
       />
       <input
+        className="input-field"
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"
       />
-      <button type="submit">Log in</button>
+      <button className="login-button" type="submit">Login</button>
+      {user && <button className="login-button" onClick={handleLogout}>Logout</button>}
+      {user && <p style={{ fontWeight: 'bold', fontColor: 'grey' }}>Welcome, {user.UserName}!</p>}
     </form>
   );
 }
+
 
 export default LoginForm;

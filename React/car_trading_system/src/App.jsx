@@ -3,18 +3,20 @@ import api from './api';
 import axios from 'axios';
 import { useSignIn } from 'react-auth-kit';
 import './App.css';
+import LoginForm from './login.jsx';
+import { AuthProvider, useAuthState, useSignOut } from 'react-auth-kit';
 
 
 
-function LoginForm() {
-  return (
-    <form className="login-form">
-      <input className="input-field" type="text" placeholder="Username" />
-      <input className="input-field" type="password" placeholder="Password" />
-      <button className="login-button" type="submit">Login</button>
-    </form>
-  );
-}
+// function LoginForm() {
+//   return (
+//     <form className="login-form">
+//       <input className="input-field" type="text" placeholder="Username" />
+//       <input className="input-field" type="password" placeholder="Password" />
+//       <button className="login-button" type="submit">Login</button>
+//     </form>
+//   );
+// }
 
 
 function CarGrid() {
@@ -114,15 +116,18 @@ const App = () => {
 //     </div>
 //   );
 // };
+const [user, setUser] = useState(null)
+const [errorMessage, setErrorMessage] = useState(null);
 return (
   <div>
     <nav className="navbar navbar-custom">
       <div className="container-fluid">
         <h1 className="logo">Car <br></br> Bazaar</h1>
         <a className="navbar-brand" href="#"></a>
-        <LoginForm />
+        <LoginForm user={user} setUser={setUser} />
       </div>
     </nav>
+    {/* {user && <p style={{ fontWeight: 'bold', color: 'white' }}>Welcome, {user.UserName}!</p>} */}
     <div className="car-grid-container">
       <CarGrid />
     </div>
