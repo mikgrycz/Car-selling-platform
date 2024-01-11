@@ -15,6 +15,7 @@ class Car(Base):
     SellerID = Column(Integer)
     PictureLink = Column(String(255))
     BodyType = Column(String(255))
+    NumberOfReviews = Column(Integer)
 
     def GetCarDetails(self):
         print("CarID: " + str(self.CarID) + "\nMake: " + self.Make + "\nModel: " + self.Model + "\nYear: " + str(self.Year) + "\nPrice: " + str(self.Price) + "\nMileage: " + str(self.Mileage) + "\nDescription: " + self.Description + "\nSellerID: " + str(self.SellerID) + "\n")

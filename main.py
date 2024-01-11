@@ -24,6 +24,8 @@ from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.security.oauth2 import OAuth2PasswordBearer
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from fastapi import Depends, HTTPException
+from fastapi.security import OAuth2PasswordBearer
 app = FastAPI()
 Models.Base.metadata.create_all(bind=engine)
 origins = [
@@ -57,6 +59,18 @@ if __name__ == "__main__":
 # Define endpoints for each class
 
 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+def get_current_user(token: str = Depends(oauth2_scheme)):
+    user = get_user_from_token(token)  # You'll need to implement this function
+    if not user:
+        raise HTTPException(
+            status_code=401, 
+            detail="Not authenticated",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return user
+
 # @app.post("/login")
 # def login(form_data: OAuth2PasswordRequestForm = Depends()):
 #     user = authenticate_user(form_data.username, form_data.password)
@@ -75,7 +89,13 @@ def get_cars(db: Session = Depends(get_db)):
     cars = db.query(Car).all()
     return {"cars": [car.__dict__ for car in cars]}
 
-
+@app.get("/car/{car_id}")
+def get_car(car_id: str):
+    db = SessionLocal()
+    car = db.query(Car).filter(Car.CarID == car_id).first()
+    if car is None:
+        raise HTTPException(status_code=404, detail="Car not found")
+    return car
 class LoginData(BaseModel):
     username: str
     password: str
@@ -123,6 +143,8 @@ def create_user(user: UserModel, db: Session = Depends(get_db)):
     db.refresh(db_user)
     return db_user
 
+# create endpoint for 
+
 # @app.post("/cars")
 # def create_car(car: CarModel, db: Session = Depends(get_db)):
 #     db_car = Car(**car.model_dump())
@@ -138,7 +160,7 @@ def create_message(message: MessageModel, db: Session = Depends(get_db)):
     db.refresh(db_message)
     return db_message
 
-@app.post("/reviews")
+@app.post("/reviews/{review_id}")
 def create_review(review: ReviewModel, db: Session = Depends(get_db)):
     db_review = Review(**review.model_dump())
     db.add(db_review)
