@@ -1,5 +1,5 @@
 # Car Bazaar
-Car trading system - currently development
+Car trading system - currently under development
 
 
 ![Main Screen](main_screen1.png)
