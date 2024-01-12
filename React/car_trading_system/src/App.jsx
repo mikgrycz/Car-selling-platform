@@ -19,6 +19,9 @@ function CarSorterAndGrid() {
   const [price, setPrice] = useState(10000000000);  // Set to a high number  const [cars, setCars] = useState([]);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(1000000000);
+  const [minMileage, setMinMileage] = useState(0);
+  const [maxMileage, setMaxMileage] = useState(1000000000);
+  const [BodyType, setBodyType] = useState('');
   const resetFilters = () => {
     setMake('');
     setModel('');
@@ -43,6 +46,14 @@ function CarSorterAndGrid() {
   const handleMaxPriceChange = (event) => {
     setMaxPrice(event.target.value);
   };
+
+  const handleMinMileageChange = (event) => {
+    setMinPrice(event.target.value);
+  };
+  const handleMaxMileageChange = (event) => {
+    setMaxPrice(event.target.value);
+  };
+
   useEffect(() => {
     fetch('http://localhost:8000/cars')  // Update with your server's URL
       .then(response => response.json())
@@ -57,11 +68,6 @@ function CarSorterAndGrid() {
 
   return (
     <div>
-
- <br/>
- <br/>
- <br/>
- <br/>
  <div className="carousel-container">
   <div className="centered-content">
     <Carousel>
@@ -113,6 +119,28 @@ function CarSorterAndGrid() {
   </div>
 
 
+  <div className="mb-3 flex-grow-1">
+    <Dropdown onSelect={handleModelChange}>
+      <Dropdown.Toggle variant="success" id="dropdown-basic">
+        {BodyType || "Body Type"}
+      </Dropdown.Toggle>
+
+      <Dropdown.Menu>
+        <Dropdown.Item eventKey="coupe">coupe</Dropdown.Item>
+        <Dropdown.Item eventKey="roadster">roadster</Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
+  </div>
+
+  <div className="mb-3 flex-grow-1" style={{ minWidth: '200px' }}>
+  <label>Min Mileage: </label>
+  <input className="input-field" type="number" min="0" max="1000000000" value={minPrice} onChange={handleMinMileageChange} />
+</div>
+
+<div className="mb-3 flex-grow-1" style={{ minWidth: '200px' }}>
+  <label>Max Mileage: </label>
+  <input className="input-field" type="number" min="0" max="1000000000" value={maxPrice} onChange={handleMaxMileageChange} />
+</div>
 
   <div className="mb-3 flex-grow-1" style={{ minWidth: '200px' }}>
   <label>Min Price: </label>
@@ -151,11 +179,17 @@ function CarSorter() {
   const [make, setMake] = useState('');
   const [model, setModel] = useState('');
   const [price, setPrice] = useState(0);
+  const [Mileage, setMileage] = useState(0);
 
   const handleMakeChange = (eventKey) => {
     setMake(eventKey);
     // Add your sorting logic here
   };
+
+const handleMileageChange = (event) => {
+  setMileage(event.target.value);
+  // Add your sorting logic here
+};
 
   const handleModelChange = (eventKey) => {
     setModel(eventKey);
@@ -176,12 +210,22 @@ function CarSorter() {
   </DropdownButton>
 </div>
 
+
+
 <div className="login-button">
   <DropdownButton id="dropdown-basic-button" title="Model" onSelect={handleModelChange}>
     <Dropdown.Item eventKey="Model1">Model1</Dropdown.Item>
     <Dropdown.Item eventKey="Model2">Model2</Dropdown.Item>
   </DropdownButton>
 </div>
+
+<div className="login-button">
+  <DropdownButton id="dropdown-basic-button" title="Body style" >
+    <Dropdown.Item eventKey="Model1">Coupe</Dropdown.Item>
+    <Dropdown.Item eventKey="Model2">Roadster</Dropdown.Item>
+  </DropdownButton>
+</div>
+<FormControl type="range" min="0" max="1000000" step="1000" value={Mileage}  />    
 
 <FormControl type="range" min="0" max="1000000000" step="10000" value={price} onChange={handlePriceChange} />    
 </div>
@@ -323,6 +367,7 @@ const [user, setUser] = useState(null)
 const [errorMessage, setErrorMessage] = useState(null);
 return (
   <Router>
+      <div className="main-content">
     <div>
       <nav className="navbar navbar-custom">
         <div className="container-fluid">
@@ -342,8 +387,13 @@ return (
           <Route exact path="/add-review/:id" element={<AddReview />} />
         </Routes>
       </div>
-      
+      </div>
     </div>
+    <footer className="footer mt-auto py-3 bg-dark">
+  <div className="container">
+    <span className="footer-text">© 2024 Car Bazaar. All rights reserved.</span>
+  </div>
+</footer>
   </Router>
 );
 };
