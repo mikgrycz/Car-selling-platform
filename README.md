@@ -7,7 +7,11 @@ Car trading system - currently development
 
 ## Current features:
 - Basic endpoints
+- Multi car view
+- Single car view
 - Logging in
+- Leaving reviews
+- Car listings sorting
 - Server structure
 - DB connection
 - Main screen displaying car listings
