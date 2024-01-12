@@ -59,7 +59,7 @@ function LoginForm() {
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
+        placeholder="password"
       />
       <button className="login-button" type="submit">Login</button>
       {user && <button className="login-button" onClick={handleLogout}>Logout</button>}
