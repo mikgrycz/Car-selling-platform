@@ -2,7 +2,7 @@
 Car trading system - currently development
 
 
-![Main Screen](main_screen.png)
+![Main Screen](main_screen1.png)
 
 
 ## Current features:
