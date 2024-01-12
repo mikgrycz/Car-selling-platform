@@ -9,7 +9,7 @@ import { Link, Route, useParams, Routes } from 'react-router-dom';
 import { BrowserRouter as Router} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Dropdown, DropdownButton, FormControl } from 'react-bootstrap';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Carousel } from 'react-bootstrap';
 import { debounce } from 'lodash';
 
 function CarSorterAndGrid() {
@@ -57,7 +57,30 @@ function CarSorterAndGrid() {
 
   return (
     <div>
-      
+
+ <br/>
+ <br/>
+ <br/>
+ <br/>
+ <div className="carousel-container">
+  <div className="centered-content">
+    <Carousel>
+      {filteredCars.map(car => (
+        <Carousel.Item key={car.CarID}>
+          <Link to={`/car/${car.CarID}`}>
+            <img className="d-block carousel-image" src={car.PictureLink} alt={`${car.Make} ${car.Model}`} />
+            <Carousel.Caption>
+              <h3>{car.Make} {car.Model}</h3>
+              <p>Price: {car.Price + " PLN"}</p>
+            </Carousel.Caption>
+          </Link>
+        </Carousel.Item>
+      ))}
+    </Carousel>
+  </div>
+</div>
+<br/>
+<br/> 
 <br/>
 <div>
 <div className="d-flex justify-content-between">
@@ -88,6 +111,8 @@ function CarSorterAndGrid() {
       </Dropdown.Menu>
     </Dropdown>
   </div>
+
+
 
   <div className="mb-3 flex-grow-1" style={{ minWidth: '200px' }}>
   <label>Min Price: </label>
@@ -256,6 +281,8 @@ function CarDetails() {
 
   return (
     <div className="car-details-one">
+      <br/>
+      <br/>
       <div className="car-image-container">
         <img className="car-image-one" src={car.PictureLink} alt={`${car.Make} ${car.Model}`} />
       </div>
