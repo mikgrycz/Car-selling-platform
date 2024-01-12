@@ -22,7 +22,8 @@ function CarSorterAndGrid() {
   const resetFilters = () => {
     setMake('');
     setModel('');
-    setPrice(10000000);
+    setMaxPrice(10000000);
+    setMinPrice(0);
   };
   
   const handleMakeChange = (eventKey) => {
@@ -308,6 +309,7 @@ return (
       <div className="car-grid-container">
         <Routes>
           <Route exact path="/"element={<CarSorterAndGrid />} />
+          
             <Route exact path="/cars/"/>      
           <Route path="/car/:id" element={<CarDetails />} />
           <Route exact path="/add-review/:id" element={<AddReview />} />
