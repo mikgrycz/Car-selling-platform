@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from Database import Base
 from pydantic import BaseModel
+from typing import Optional
 import os
 class Car(Base):
     __tablename__ = 'cars'
@@ -48,7 +49,7 @@ class Car(Base):
 
 
 class CarModel(BaseModel):
-    CarID: int
+    CarID: Optional[int] = None
     Make: str
     Model: str
     Year: int

@@ -13,7 +13,7 @@ load_dotenv()
 mysql_password = os.getenv('MYSQL_PASSWORD')
 URL_DATABASE = 'mysql+pymysql://root:' + mysql_password + '@localhost:3306/cartradingsystem'
 
-engine = create_engine(URL_DATABASE)
+engine = create_engine(URL_DATABASE, pool_timeout=60)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 

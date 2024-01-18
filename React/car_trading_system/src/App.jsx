@@ -12,7 +12,7 @@ import { Dropdown, DropdownButton, FormControl } from 'react-bootstrap';
 import { Button, Form, Carousel } from 'react-bootstrap';
 import { debounce } from 'lodash';
 import { useHistory } from 'react-router-dom';
-
+import AddCar from './AddCar.jsx';
 function CarSorterAndGrid() {
   const [cars, setCars] = useState([]);
   const [make, setMake] = useState('');
@@ -396,6 +396,8 @@ const App = () => {
 
 const [user, setUser] = useState(null)
 const [errorMessage, setErrorMessage] = useState(null);
+let storedUser = localStorage.getItem('user');
+storedUser = storedUser ? JSON.parse(storedUser) : null;
 return (
   <Router>
       <div className="main-content">
@@ -407,7 +409,9 @@ return (
         </Link>
           <a className="navbar-brand" href="#"></a>
           <LoginForm user={user} setUser={setUser} />
-
+          <Link to="/add-car">
+          {storedUser && <button className="login-button">Add a new car</button>}
+          </Link>
         </div>
       </nav>
       {/* {user && <p style={{ fontWeight: 'bold', color: 'white' }}>Welcome, {user.UserName}!</p>} */}
@@ -418,6 +422,7 @@ return (
             <Route exact path="/cars/"/>      
           <Route path="/car/:id" element={<CarDetails />} />
           <Route exact path="/add-review/:id" element={<AddReview />} />
+          <Route exact path="/add-car" element={<AddCar />} />
         </Routes>
       </div>
       </div>

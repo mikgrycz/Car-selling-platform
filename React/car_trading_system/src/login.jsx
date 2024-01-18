@@ -5,10 +5,16 @@ function LoginForm() {
   const [username, setusername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
+
+  const handleLogin = () => { 
+   // window.location.reload();
+  };
   const handleLogout = () => {
     setUser(null); // Clear the user's information from state
     localStorage.removeItem('user'); // Clear the user's information from local storage
     localStorage.removeItem('token'); // Clear the token from local storage
+      window.location.reload();
+
   };
   useEffect(() => {
     const loggedInUser = localStorage.getItem('user');
@@ -41,7 +47,7 @@ function LoginForm() {
         console.error('Login failed');
       }
     } catch (error) {
-      console.error('An error occurred:', error);
+      console.error('A login error occurred:', error);
     }
   };
 
@@ -61,7 +67,7 @@ function LoginForm() {
         onChange={(e) => setPassword(e.target.value)}
         placeholder="password"
       />
-      <button className="login-button" type="submit">Login</button>
+      <button className="login-button" type="submit" onClick={handleLogin}>Login</button>
       {user && <button className="login-button" onClick={handleLogout}>Logout</button>}
       {user && <p style={{ fontWeight: 'bold', fontColor: 'grey' }}>Welcome, {user.UserName}!</p>}
     </form>
