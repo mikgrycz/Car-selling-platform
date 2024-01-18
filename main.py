@@ -26,6 +26,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
+from fastapi import FastAPI, Depends
+from sqlalchemy.orm import Session
 app = FastAPI()
 Models.Base.metadata.create_all(bind=engine)
 origins = [
@@ -120,9 +122,9 @@ def get_messages(db: Session = Depends(get_db)):
     messages = db.query(Message).all()
     return messages
 
-@app.get("/reviews")
-def get_reviews(db: Session = Depends(get_db)):
-    reviews = db.query(Review).all()
+@app.get("/reviews/{car_id}")
+def get_reviews(car_id: int, db: Session = Depends(get_db)):
+    reviews = db.query(Review).filter(Review.CarSoldID == car_id).all()
     return reviews
 
 @app.get("/transactions")
@@ -159,10 +161,16 @@ def create_message(message: MessageModel, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_message)
     return db_message
-
-@app.post("/reviews/{review_id}")
+# @app.post("/reviews")
+# def create_review(review: ReviewModel, db: Session = Depends(get_db)):
+#     db_review = Review(**review.dict())
+#     db.add(db_review)
+#     db.commit()
+#     db.refresh(db_review)
+#     return db_review
+@app.post("/reviews")
 def create_review(review: ReviewModel, db: Session = Depends(get_db)):
-    db_review = Review(**review.model_dump())
+    db_review = Review(**review.dict())
     db.add(db_review)
     db.commit()
     db.refresh(db_review)

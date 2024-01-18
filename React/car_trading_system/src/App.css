@@ -28,7 +28,7 @@
 .car-details-container {
   flex: 1;
   max-width: 50%;
-}
+  }
 
 .car-grid-container {
   color: white;
@@ -49,6 +49,21 @@
 .review-box {
   width: 100%;
   height: 200px;
+}
+
+.reviews-container {
+  overflow-y: scroll;
+  max-height: 200px;
+  padding: 40px;
+}
+.component-class {
+  margin-left: 20px; /* Adjust the value as needed */
+}
+.review {
+  background-color: #363636;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
 }
 .form-control {
   background-color: #212020;  /* Light grey */
@@ -322,7 +337,7 @@ input[type='range']::-moz-range-thumb {
   background-color: #3a5791;
   color: white;
   text-align: center;
-  padding: 20px;
+  padding: 10px;
 }
 
 .car-grid-container a {

@@ -11,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Dropdown, DropdownButton, FormControl } from 'react-bootstrap';
 import { Button, Form, Carousel } from 'react-bootstrap';
 import { debounce } from 'lodash';
+import { useHistory } from 'react-router-dom';
 
 function CarSorterAndGrid() {
   const [cars, setCars] = useState([]);
@@ -37,7 +38,9 @@ function CarSorterAndGrid() {
     setModel(eventKey);
   };
 
-
+  const handleBodyTypeChange = (eventKey) => {
+    setBodyType(eventKey);
+  };
   
   const handleMinPriceChange = (event) => {
     setMinPrice(event.target.value);
@@ -71,7 +74,7 @@ function CarSorterAndGrid() {
  <div className="carousel-container">
   <div className="centered-content">
     <Carousel>
-      {filteredCars.map(car => (
+      {cars.map(car => (
         <Carousel.Item key={car.CarID}>
           <Link to={`/car/${car.CarID}`}>
             <img className="d-block carousel-image" src={car.PictureLink} alt={`${car.Make} ${car.Model}`} />
@@ -120,7 +123,7 @@ function CarSorterAndGrid() {
 
 
   <div className="mb-3 flex-grow-1">
-    <Dropdown onSelect={handleModelChange}>
+    <Dropdown onSelect={handleBodyTypeChange}>
       <Dropdown.Toggle variant="success" id="dropdown-basic">
         {BodyType || "Body Type"}
       </Dropdown.Toggle>
@@ -175,7 +178,7 @@ function CarSorterAndGrid() {
     </div>
   );
 }
-function CarSorter() {
+function CarSorter() { 
   const [make, setMake] = useState('');
   const [model, setModel] = useState('');
   const [price, setPrice] = useState(0);
@@ -201,6 +204,7 @@ const handleMileageChange = (event) => {
     // Add your sorting logic here
   };
 
+
   return (
     <div>
 <div className="login-button">
@@ -220,14 +224,14 @@ const handleMileageChange = (event) => {
 </div>
 
 <div className="login-button">
-  <DropdownButton id="dropdown-basic-button" title="Body style" >
-    <Dropdown.Item eventKey="Model1">Coupe</Dropdown.Item>
-    <Dropdown.Item eventKey="Model2">Roadster</Dropdown.Item>
+  <DropdownButton id="dropdown-basic-button" title="Body style"  >
+    <Dropdown.Item eventKey="Body1">Coupe</Dropdown.Item>
+    <Dropdown.Item eventKey="Body2">Roadster</Dropdown.Item>
   </DropdownButton>
 </div>
 <FormControl type="range" min="0" max="1000000" step="1000" value={Mileage}  />    
 
-<FormControl type="range" min="0" max="1000000000" step="10000" value={price} onChange={handlePriceChange} />    
+<FormControl type="range" min="0" max="1000000000" step="10000" value={price} onChange={handleMileageChange} />    
 </div>
   );
 }
@@ -235,33 +239,37 @@ const handleMileageChange = (event) => {
 function AddReview() {
   const [review, setReview] = useState('');
   const [rating, setRating] = useState(0);
-
+  const { id } = useParams();
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const response = await axios.post('http://localhost:8000/reviews/2', {
-      review,
-      rating,
+    const response = await axios.post(`http://localhost:8000/reviews`, {
+      Rating: rating,
+      Comment: review,
+      ReviewerID: 1,
+      CarSoldID: id
     });
 
     console.log(response.data);
+    
   };
 
   return (
     <form className="container" onSubmit={handleSubmit}>
+      <br/>
       <div className="form-group">
-        <div><br/></div>
         <label htmlFor="review">Please write your review here:</label>
         <div><br/></div>
         <textarea className="form-control" id="review" value={review} onChange={(e) => setReview(e.target.value)} />
       </div>
+      <br/>
       <div className="form-group">
-        <div><br/></div>
-        <label htmlFor="rating">Rating (1 - 10):<br /> </label>
+        <label htmlFor="rating">Rating (1 - 10):</label>
         <div><br/></div>
         <input className="form-control" type="number" min="1" max="10" id="rating" value={rating} onChange={(e) => setRating(e.target.value)} />
       </div>
-      <br />
+      <br/>
       <button className="btn btn-primary" type="submit">Submit</button>
     </form>
   );
@@ -299,11 +307,16 @@ function CarGrid() {
 
 function CarDetails() {
   const [car, setCar] = useState(null);
+  const [reviews, setReviews] = useState([]);
   const { id } = useParams();
   useEffect(() => {
     fetch(`http://localhost:8000/car/${id}`)  // Update with your server's URL
       .then(response => response.json())
       .then(data => setCar(data));
+
+      fetch(`http://localhost:8000/reviews/${id}`)
+      .then(response => response.json())
+      .then(data => setReviews(data));
   }, [id]);
 
   // Define handleAddReview inside CarDetails
@@ -319,32 +332,50 @@ function CarDetails() {
 
   function handleShare() {
     // Navigate to the add review page
-    window.location.href = `/share/${id}`; // Add this line
+    window.location.href = `https://www.facebook.com/`; // Add this line
   }
   if (!car) return <div>Loading...</div>;
 
   return (
-    <div className="car-details-one">
+    <div>
+      <div className="car-details-one">
+        <br/>
+        <br/>
+        <div className="car-image-container">
+          <img className="car-image-one" src={car.PictureLink} alt={`${car.Make} ${car.Model}`} />
+        </div>
+        <div className="car-details-container">
+          <br />
+          <h2>{car.Make} {car.Model}</h2>
+          <p><span className="field-name">Year:</span> {car.Year}</p>
+          <p><span className="field-name">Mileage:</span> {car.Mileage + " KM"}</p>
+          <p><span className="field-name">Price:</span> {car.Price + " PLN"}</p>
+          <p><span className="field-name">Body Type:</span> {car.BodyType}</p>
+          <p><span className="field-name">Seller ID:</span> {car.SellerID}</p>
+          <p>{car.Description}</p>
+            <div className="button-container">
+              <button className="login-button" onClick={handleAddReview}>Add Review</button> {/* Add this line */}
+              <button className="login-button" onClick={handleBuy}>Buy</button> {/* Add this line */}
+              <button className="login-button" onClick={handleShare}>Share</button> {/* Add this line */}
+            </div>
+        </div>
+      </div>
       <br/>
       <br/>
-      <div className="car-image-container">
-        <img className="car-image-one" src={car.PictureLink} alt={`${car.Make} ${car.Model}`} />
-      </div>
-      <div className="car-details-container">
-        <br />
-        <h2>{car.Make} {car.Model}</h2>
-        <p><span className="field-name">Year:</span> {car.Year}</p>
-        <p><span className="field-name">Mileage:</span> {car.Mileage + " KM"}</p>
-        <p><span className="field-name">Price:</span> {car.Price + " PLN"}</p>
-        <p><span className="field-name">Body Type:</span> {car.BodyType}</p>
-        <p><span className="field-name">Seller ID:</span> {car.SellerID}</p>
-        <p>{car.Description}</p>
-          <div className="button-container">
-            <button className="login-button" onClick={handleAddReview}>Add Review</button> {/* Add this line */}
-            <button className="login-button" onClick={handleBuy}>Buy</button> {/* Add this line */}
-            <button className="login-button" onClick={handleShare}>Share</button> {/* Add this line */}
-          </div>
-      </div>
+      <div className="reviews-container" style={{ overflowY: 'scroll', maxHeight: '200px' }}>
+      <h2 className='component-class'>Reviews</h2> {/* Add this line */}
+    <br/>
+  {reviews.map((review) => (
+    <div key={review.ReviewID} className="review">
+      <p>Rating: {review.Rating}</p>
+      <p>Comment: {review.Comment}</p>
+      {/* Display other review fields as needed */}
+    </div>
+          ))}
+        </div>
+        <br/>
+        <br/>
+        <br/>
     </div>
   );
 }
@@ -371,7 +402,9 @@ return (
     <div>
       <nav className="navbar navbar-custom">
         <div className="container-fluid">
+        <Link to="/">
           <h1 className="logo">Car <br></br> Bazaar</h1>
+        </Link>
           <a className="navbar-brand" href="#"></a>
           <LoginForm user={user} setUser={setUser} />
 
@@ -389,9 +422,11 @@ return (
       </div>
       </div>
     </div>
-    <footer className="footer mt-auto py-3 bg-dark">
+<footer className="footer mt-auto py-1 bg-dark">
   <div className="container">
-    <span className="footer-text">© 2024 Car Bazaar. All rights reserved.</span>
+    <Link to="/">
+      <span className="footer-text">© 2024 Car Bazaar. All rights reserved.</span>
+    </Link>
   </div>
 </footer>
   </Router>
