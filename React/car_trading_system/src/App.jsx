@@ -26,8 +26,11 @@ function CarSorterAndGrid() {
   const resetFilters = () => {
     setMake('');
     setModel('');
+    setBodyType('');
     setMaxPrice(10000000);
     setMinPrice(0);
+    setMinMileage(0);
+    setMaxMileage(10000000);
   };
   
   const handleMakeChange = (eventKey) => {
@@ -64,9 +67,14 @@ function CarSorterAndGrid() {
   }, []);
 
   const filteredCars = cars.filter(car => {
-    return (make === '' || car.Make === make) &&
-           (model === '' || car.Model === model) &&
-           (car.Price >= minPrice && car.Price <= maxPrice);;
+    const makeRegex = new RegExp(make, 'i');
+    const modelRegex = new RegExp(model, 'i');
+    const bodyTypeRegex = new RegExp(BodyType, 'i');
+  
+    return (make === '' || makeRegex.test(car.Make)) &&
+           (model === '' || modelRegex.test(car.Model)) &&
+           (BodyType === '' || bodyTypeRegex.test(car.BodyType)) &&
+           (car.Price >= minPrice && car.Price <= maxPrice);
   });
 
   return (
@@ -164,12 +172,12 @@ function CarSorterAndGrid() {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
+        <Dropdown.Item eventKey="convertible">convertible</Dropdown.Item>
         <Dropdown.Item eventKey="coupe">coupe</Dropdown.Item>
         <Dropdown.Item eventKey="roadster">roadster</Dropdown.Item>
         <Dropdown.Item eventKey="sedan">sedan</Dropdown.Item>
         <Dropdown.Item eventKey="suv">suv</Dropdown.Item>
         <Dropdown.Item eventKey="hatchback">hatchback</Dropdown.Item>
-        <Dropdown.Item eventKey="convertible">convertible</Dropdown.Item>
         <Dropdown.Item eventKey="pickup">pickup</Dropdown.Item>
         <Dropdown.Item eventKey="van">van</Dropdown.Item>
         <Dropdown.Item eventKey="wagon">wagon</Dropdown.Item>
@@ -297,6 +305,8 @@ function AddReview() {
     });
 
     console.log(response.data);
+    // go to / 
+    window.location.href = `/car/${id}`;
     
   };
 
@@ -441,7 +451,7 @@ function CarDetails() {
   {reviews.map((review) => (
     <div key={review.ReviewID} className="review">
       <p>Rating: {review.Rating}</p>
-      <p>Comment: {review.Comment}</p>
+      <p>{review.Comment}</p>
       {/* Display other review fields as needed */}
     </div>
           ))}
@@ -501,6 +511,10 @@ return (
       </div>
       </div>
     </div>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
 <footer className="footer mt-auto py-1 bg-dark">
   <div className="container">
     <Link to="/">
