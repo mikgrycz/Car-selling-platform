@@ -447,7 +447,6 @@ function CarDetails() {
         </div>
       </div>
       <br/>
-      <br/>
       <div className="reviews-container" style={{ overflowY: 'scroll', maxHeight: '200px' }}>
       <h2 className='component-class'>Reviews</h2> {/* Add this line */}
     <br/>

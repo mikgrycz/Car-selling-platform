@@ -208,9 +208,6 @@ textarea.form-control, input.form-control {
     0 3px 6px rgba(0,0,0,0.23),
     0 5px 15px rgba(0,0,0,0.2) !important;
 }
-
-
-
 .login-button {
   background-color: #3d3d3d; /* Dark grey background */
   color: rgb(238, 238, 238); /* White text */
