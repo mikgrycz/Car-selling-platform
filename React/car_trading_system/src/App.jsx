@@ -103,6 +103,25 @@ function CarSorterAndGrid() {
         <Dropdown.Item eventKey="Porsche">Porsche</Dropdown.Item>
         <Dropdown.Item eventKey="Ferrari">Ferrari</Dropdown.Item>
         <Dropdown.Item eventKey="Lamborghini">Lamborghini</Dropdown.Item>
+        <Dropdown.Item eventKey="Chevrolet">Chevrolet</Dropdown.Item>
+        <Dropdown.Item eventKey="Audi">Audi</Dropdown.Item>
+        <Dropdown.Item eventKey="BMW">BMW</Dropdown.Item>
+        <Dropdown.Item eventKey="Mercedes">Mercedes</Dropdown.Item>
+        <Dropdown.Item eventKey="Ford">Ford</Dropdown.Item>
+        <Dropdown.Item eventKey="Toyota">Toyota</Dropdown.Item>
+        <Dropdown.Item eventKey="Honda">Honda</Dropdown.Item>
+        <Dropdown.Item eventKey="Nissan">Nissan</Dropdown.Item>
+        <Dropdown.Item eventKey="Mazda">Mazda</Dropdown.Item>
+        <Dropdown.Item eventKey="Volkswagen">Volkswagen</Dropdown.Item>
+        <Dropdown.Item eventKey="Volvo">Volvo</Dropdown.Item>
+        <Dropdown.Item eventKey="Subaru">Subaru</Dropdown.Item>
+        <Dropdown.Item eventKey="Mitsubishi">Mitsubishi</Dropdown.Item>
+        <Dropdown.Item eventKey="Kia">Kia</Dropdown.Item>
+        <Dropdown.Item eventKey="Hyundai">Hyundai</Dropdown.Item>
+        <Dropdown.Item eventKey="Lexus">Lexus</Dropdown.Item>
+        <Dropdown.Item eventKey="Infiniti">Infiniti</Dropdown.Item>
+        <Dropdown.Item eventKey="Acura">Acura</Dropdown.Item>
+        <Dropdown.Item eventKey="Alfa Romeo">Alfa Romeo</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   </div>
@@ -117,6 +136,22 @@ function CarSorterAndGrid() {
         <Dropdown.Item eventKey="911">911</Dropdown.Item>
         <Dropdown.Item eventKey="Huracan">Huracan</Dropdown.Item>
         <Dropdown.Item eventKey="Corvette">Corvette</Dropdown.Item>
+        <Dropdown.Item eventKey="488">488</Dropdown.Item>
+        <Dropdown.Item eventKey="Aventador">Aventador</Dropdown.Item>
+        <Dropdown.Item eventKey="Carrera">Carrera</Dropdown.Item>
+        <Dropdown.Item eventKey="Cayman">Cayman</Dropdown.Item>
+        <Dropdown.Item eventKey="F8">F8</Dropdown.Item>
+        <Dropdown.Item eventKey="F12">F12</Dropdown.Item>
+        <Dropdown.Item eventKey="Gallardo">Gallardo</Dropdown.Item>
+        <Dropdown.Item eventKey="458">458</Dropdown.Item>
+        <Dropdown.Item eventKey="488">488</Dropdown.Item>
+        <Dropdown.Item eventKey="812">812</Dropdown.Item>
+        <Dropdown.Item eventKey="SF90">SF90</Dropdown.Item>
+        <Dropdown.Item eventKey="Portofino">Portofino</Dropdown.Item>
+        <Dropdown.Item eventKey="812">812</Dropdown.Item>
+        <Dropdown.Item eventKey="GTC4">GTC4</Dropdown.Item>
+        <Dropdown.Item eventKey="488">488</Dropdown.Item>
+        
       </Dropdown.Menu>
     </Dropdown>
   </div>
@@ -131,6 +166,16 @@ function CarSorterAndGrid() {
       <Dropdown.Menu>
         <Dropdown.Item eventKey="coupe">coupe</Dropdown.Item>
         <Dropdown.Item eventKey="roadster">roadster</Dropdown.Item>
+        <Dropdown.Item eventKey="sedan">sedan</Dropdown.Item>
+        <Dropdown.Item eventKey="suv">suv</Dropdown.Item>
+        <Dropdown.Item eventKey="hatchback">hatchback</Dropdown.Item>
+        <Dropdown.Item eventKey="convertible">convertible</Dropdown.Item>
+        <Dropdown.Item eventKey="pickup">pickup</Dropdown.Item>
+        <Dropdown.Item eventKey="van">van</Dropdown.Item>
+        <Dropdown.Item eventKey="wagon">wagon</Dropdown.Item>
+        <Dropdown.Item eventKey="minivan">minivan</Dropdown.Item>
+        <Dropdown.Item eventKey="bus">bus</Dropdown.Item>
+        
       </Dropdown.Menu>
     </Dropdown>
   </div>

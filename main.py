@@ -7,6 +7,8 @@ from SuperUser import SuperUser, SuperUserModel
 from datetime import datetime
 import mysql.connector
 import os
+from os import makedirs
+from os.path import join, dirname
 from os.path import join, dirname
 import sys
 from fastapi import FastAPI, HTTPException, Depends, status
@@ -176,6 +178,13 @@ def create_review(review: ReviewModel, db: Session = Depends(get_db)):
     db.refresh(db_review)
     return db_review
 
+@app.post("/cars")
+def create_car(car: CarModel, db: Session = Depends(get_db)):
+    db_car = Car(**car.model_dump())
+    db.add(db_car)
+    db.commit()
+    db.refresh(db_car)
+    return db_car
 @app.post("/transactions")
 def create_transaction(transaction: TransactionModel, db: Session = Depends(get_db)):
     db_transaction = Transaction(**transaction.model_dump())
@@ -202,3 +211,10 @@ def create_listing(listing: ListingModel, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_listing)
     return db_listing
+
+
+@app.post('/create-dir')
+def create_dir(dir: str):
+    dir_path = join('Public', 'CarData', dir)
+    makedirs(dir_path, exist_ok=True)
+    return { 'message': 'Directory created' }

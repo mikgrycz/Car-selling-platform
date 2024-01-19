@@ -1,18 +1,21 @@
+import axios from 'axios';
 import { useState } from 'react';
 
     const AddCar = () => {
     const [car, setCar] = useState({
-        CarID: '',
+        CarID: 0,
         Make: '',
         Model: '',
-        Year: '',
-        Price: '',
-        Mileage: '',
+        Year: 0,
+        Price: 0,
+        Mileage: 0,
         Description: '',
-        SellerID: '',
+        SellerID: 0,
         PictureLink: '',
         BodyType: ''
     });
+    const [selectedFile, setSelectedFile] = useState(null);
+
     const handleFileChange = (event) => {
         if (event.target.files && event.target.files[0]) {
         const file = event.target.files[0];
@@ -22,16 +25,33 @@ import { useState } from 'react';
         };
         reader.readAsDataURL(file);
         }
+        setSelectedFile(event.target.files[0]);
+
     };
     const handleChange = (event) => {
         setCar({ ...car, [event.target.name]: event.target.value });
     };
 
-    const handleSubmit = (event) => {
+
+
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
       
         // Construct a new CarModel object
-        const newCar = {
+        /*
+            CarID: Optional[int] = None
+    Make: str
+    Model: str
+    Year: int
+    Price: int
+    Mileage: int
+    Description: str
+    SellerID: int
+    PictureLink: str
+    BodyType: str
+        */
+        const newCar =  {
             Make: car.Make,
             Model: car.Model,
             Year: parseInt(car.Year),
@@ -39,10 +59,30 @@ import { useState } from 'react';
             Mileage: parseInt(car.Mileage),
             Description: car.Description,
             SellerID: 1,
+            PictureLink: " ",
             BodyType: car.BodyType
           };
       
-        // ... submit the form ...
+          console.log(newCar.data);
+
+          try {
+            // Post the new car to the database and get the response
+            const response = await axios.post('http://localhost:8000/cars', newCar);
+        
+            // The response should include the posted car with its assigned ID
+            const postedCar = response.data;
+            postedCar.PictureLink = `\\CarData\\c${postedCar.CarID}\\c${postedCar.CarID}.png`;
+            // Now you can use postedCar, which includes the assigned ID
+            await axios.put(`http://localhost:8000/cars/${postedCar.CarID}`, postedCar);
+            
+            await axios.post('http://localhost:8000/create-dir', { dir: `c${postedCar.CarID}` });
+
+            console.log(postedCar);
+          } catch (error) {
+            console.error(error);
+          }
+
+        
     };
 
   return (

@@ -14,12 +14,13 @@ Car trading system - currently under development
 ## Current features:
 - Basic endpoints
 - Multi car view
-- Single car view
+- Single car view with info about the listing, reviews and options to buy, share and to leave an opinion
 - Logging in
 - Leaving reviews
 - Car listings sorting
 - Server structure
 - DB connection
 - Main screen displaying car listings
+- Adding new cars
 
 

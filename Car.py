@@ -33,15 +33,15 @@ class Car(Base):
         self.PictureLink = "../CarData/c" + str(CarID) + "/1.png"
         self.BodyType = BodyType
 
-    def __init__(self, CarID, Make, Model, Year, Price, Mileage, Description, SellerID, BodyType):
-        # create new folder for car images c + carID in CarData
-        self.SetCarDetails(CarID, Make, Model, Year, Price, Mileage, Description, SellerID, BodyType)
-        folder_name = f"c{CarID}"
-        folder_path = os.path.join("CarData", folder_name)
-        os.makedirs(folder_path)
+    # def __init__(self, CarID, Make, Model, Year, Price, Mileage, Description, SellerID, BodyType):
+    #     # create new folder for car images c + carID in CarData
+    #     self.SetCarDetails(CarID, Make, Model, Year, Price, Mileage, Description, SellerID, BodyType)
+    #     folder_name = f"c{CarID}"
+    #     folder_path = os.path.join("CarData", folder_name)
+    #     os.makedirs(folder_path)
 
-    def __init__(self):
-        pass
+    # def __init__(self):
+    #     pass
     # create new folder for car images c + carID in CarData
         #folder_name = f"c000001"  #placeholder
         #folder_path = os.path.join("CarData", folder_name)
