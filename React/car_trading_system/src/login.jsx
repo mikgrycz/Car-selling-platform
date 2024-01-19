@@ -70,7 +70,12 @@ function LoginForm() {
       />
       <button className="login-button" type="submit" onClick={handleLogin}>Login</button>
       {user && <button className="login-button" onClick={handleLogout}>Logout</button>}
-      <div className="login-message">{user ? `Welcome, ${user.UserName}!`:""}</div>
+      <div className="login-message">
+      <div className='login-button'>
+      {user ? `Welcome, ${user.UserName}!`:"Hello, Guest!"}
+      </div>
+      
+      </div>
     </form>
   );
 }

@@ -46,8 +46,12 @@
   object-fit: cover;
 }
 .car-details-container {
-  flex: 1;
+  /* flex: 1; */
   max-width: 50%;
+  border-radius: 10px;
+  box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+  background: #3d3d3d;
+  padding: 30px;
   }
 
 .car-grid-container {
@@ -204,6 +208,9 @@ textarea.form-control, input.form-control {
     0 3px 6px rgba(0,0,0,0.23),
     0 5px 15px rgba(0,0,0,0.2) !important;
 }
+
+
+
 .login-button {
   background-color: #3d3d3d; /* Dark grey background */
   color: rgb(238, 238, 238); /* White text */

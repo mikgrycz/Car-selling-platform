@@ -100,7 +100,7 @@ function CarSorterAndGrid() {
 <br/> 
 <br/>
 <div>
-<div className="d-flex justify-content-between">
+<div className="d-flex justify-content-between" style={{paddingLeft:'30px'}}>
   <div className="mb-3 flex-grow-1">
     <Dropdown onSelect={handleMakeChange}>
       <Dropdown.Toggle variant="success" id="dropdown-basic">
@@ -421,13 +421,16 @@ function CarDetails() {
 
   return (
     <div>
-      <div className="car-details-one">
+      <div className="car-details-one" style={{ paddingTop: '55px', paddingRight:'35px' }}>
         <br/>
         <br/>
         <div className="car-image-container">
           <img className="car-image-one" src={car.PictureLink} alt={`${car.Make} ${car.Model}`} />
         </div>
-        <div className="car-details-container">
+        <br/>
+        <br/>
+        <br/>
+        <div className="car-details-container" style={{ padding: '30px' }}>
           <br />
           <h2>{car.Make} {car.Model}</h2>
           <p><span className="field-name">Year:</span> {car.Year}</p>
