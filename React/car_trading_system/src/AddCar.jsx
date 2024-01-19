@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
+import './App.css';
+
 
     const AddCar = () => {
     const [car, setCar] = useState({
@@ -86,6 +88,7 @@ import { useState } from 'react';
     };
 
   return (
+    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
     <form onSubmit={handleSubmit} style={{ padding: '100px' }}>
         <h1>Add a new car here: </h1>
         <div className="mb-3">
@@ -127,6 +130,18 @@ import { useState } from 'react';
         <br />
         <br />
     </form>
+    <div className='car-image-container-2'>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br/>
+        <img className="car-image-two" src={process.env.PUBLIC_URL + '/Photos/garage.jpg'} alt="Garage" />
+    </div>
+    </div>
   );
 };
 

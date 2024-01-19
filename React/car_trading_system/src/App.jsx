@@ -320,6 +320,30 @@ function AddReview() {
   );
 }
 
+function EndOfTransaction() {
+  const { id } = 1;
+  //axios.post(`http://localhost:8000/buy/${id}`);
+  return (
+    <div className="container mt-5">
+      <div className="jumbotron">
+        <h1 className="display-4">Thank You for Your Interest!</h1>
+        <hr className="my-4"/>
+        <p className="lead">We appreciate doing business with you. Our team will contact you shortly.</p>
+      </div>
+      <div>
+      <br />
+      <br />
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+  <img className="car-image-two" src={process.env.PUBLIC_URL + '/Photos/thankyou.jpg'} alt="Garage" />
+</div>      
+<br/>
+      <br/>
+      <br/>
+    </div>
+    </div>
+  );
+}
+
 
 function CarGrid() {
   const [cars, setCars] = useState([]);
@@ -373,6 +397,10 @@ function CarDetails() {
   function handleBuy() {
     // Navigate to the add review page
     window.location.href = `/buy/${id}`; // Add this line
+    axios.post(`http://localhost:8000/buy/${id}`);
+
+    // access endpoint to send email
+
   }
 
   function handleShare() {
@@ -468,6 +496,7 @@ return (
           <Route path="/car/:id" element={<CarDetails />} />
           <Route exact path="/add-review/:id" element={<AddReview />} />
           <Route exact path="/add-car" element={<AddCar />} />
+          <Route exact path="/buy/:id" element={<EndOfTransaction />} />
         </Routes>
       </div>
       </div>

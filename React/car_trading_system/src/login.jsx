@@ -43,6 +43,7 @@ function LoginForm() {
         console.log(response.data); // Log the user's information
         localStorage.setItem('user', JSON.stringify(response.data)); // Store the user's information in local storage
         localStorage.setItem('token', response.data.token); // Store the token in local storage
+        window.location.reload();
       } else {
         console.error('Login failed');
       }
@@ -69,7 +70,7 @@ function LoginForm() {
       />
       <button className="login-button" type="submit" onClick={handleLogin}>Login</button>
       {user && <button className="login-button" onClick={handleLogout}>Logout</button>}
-      {user && <p style={{ fontWeight: 'bold', fontColor: 'grey' }}>Welcome, {user.UserName}!</p>}
+      <div className="login-message">{user ? `Welcome, ${user.UserName}!`:""}</div>
     </form>
   );
 }

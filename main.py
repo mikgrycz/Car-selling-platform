@@ -30,6 +30,7 @@ from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
+from Mail import send_car_details
 app = FastAPI()
 Models.Base.metadata.create_all(bind=engine)
 origins = [
@@ -218,3 +219,9 @@ def create_dir(dir: str):
     dir_path = join('Public', 'CarData', dir)
     makedirs(dir_path, exist_ok=True)
     return { 'message': 'Directory created' }
+
+@app.post('/buy/{id}')
+async def buy_item():
+    send_car_details("mikolajgrycz@gmail.com")
+
+    return {"message": "Purchase successful and email sent"}

@@ -13,6 +13,26 @@
   justify-content: center;
 }
 
+.car-image-container-2 {
+  flex: 1;
+  max-width: 70%;
+  height: 50vh; /* Make the container half the height of the viewport */
+  border: 30px solid transparent;
+  box-sizing: border-box;
+}
+.car-image-container-2 img {
+  width: 100%; /* Make the image adjust to the container's width */
+  height: auto; /* Keep the image's aspect ratio */
+  object-fit: cover;
+}
+
+
+.car-image-two {
+  max-width: 100%;
+  height: auto;
+  border-radius: 15px; /* Add this line */
+  box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+}
 .car-image-container {
   flex: 1;
   max-width: 50%;
@@ -190,7 +210,7 @@ textarea.form-control, input.form-control {
   border: none;
   border-radius: 5px;
   padding: 5px 10px;
-  font-family: "logoFont";
+  /* font-family: "logoFont"; */
   font-weight: bold;
   box-shadow: 
     0 3px 6px rgba(0,0,0,0.16), 
