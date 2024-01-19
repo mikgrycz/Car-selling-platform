@@ -47,7 +47,7 @@ class SuperUser(User):   #### SINGLETON #####
     def ViewUserProfile(UserID):
         print("View User Profile")
 class SuperUserModel(BaseModel):
-    id: int
+    id: int # 9999 superuser id
     name: str
     password: str
     email: str
