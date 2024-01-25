@@ -124,3 +124,4 @@ npm start
 ![GitHub license](https://img.shields.io/github/license/mikgrycz/Car-selling-platform)
 ![Python](https://img.shields.io/badge/python-3.9-blue)
 ![React](https://img.shields.io/badge/react-17.0.2-blue)
+![MySQL](https://img.shields.io/badge/mysql-8.0.25-blue)
