@@ -12,7 +12,6 @@ Car trading system - currently under development
 ![Review Screen](review_screen.png)
 
 ## Current features:
-- Basic endpoints
 - Multi car view
 - Single car view with info about the listing, reviews and options to buy, share and to leave an opinion
 - Logging in
@@ -23,4 +22,12 @@ Car trading system - currently under development
 - Main screen displaying car listings
 - Adding new cars
 
+## Technologies:
+- Python
+- React.js  
+- MySQL
+- Axios
+- Pydantic
+- FastAPI
+- Bootstrap
 
