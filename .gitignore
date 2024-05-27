@@ -1,1 +1,6 @@
 .env
+Scraper.py
+otomoto_listings.csv
+car_listings.csv
+output.html
+```
