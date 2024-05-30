@@ -62,8 +62,17 @@ function CarSorterAndGrid() {
 
   useEffect(() => {
     fetch('http://localhost:8000/cars')  // Update with your server's URL
-      .then(response => response.json())
-      .then(data => setCars(data.cars));
+      .then(response => {
+        console.log('Response:', response);
+        return response.json();
+      })
+      .then(data => {
+        console.log('Data:', data);
+        setCars(data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   }, []);
 
   const filteredCars = cars.filter(car => {
