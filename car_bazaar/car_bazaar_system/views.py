@@ -44,10 +44,10 @@ def get_cars(request):
 
 @api_view(['GET'])
 def get_car(request, car_id):
-    try:
-        car = Car.objects.get(CarID=car_id)
-    except Car.DoesNotExist:
-        raise NotFound(detail="Car not found")
+    # try:
+    car = Car.objects.get(CarID=car_id)
+    # except Car.DoesNotExist:
+    #     raise NotFound(detail="Car not found")
     serializer = CarSerializer(car)
     return Response(serializer.data)
 
@@ -82,9 +82,7 @@ def get_messages(request):
 
 @api_view(['GET'])
 def get_reviews(request, car_id):
-    reviews = Review.objects.filter(CarSoldID=car_id)
-    if not reviews:
-        raise NotFound(detail="Reviews not found")
+    reviews = Review.objects.filter(CarSold_id=car_id)
     serializer = ReviewSerializer(reviews, many=True)
     return Response(serializer.data)
 
@@ -126,6 +124,16 @@ def buy_item(request, id):
     return Response({"message": "Purchase successful and email sent"}, status=status.HTTP_200_OK)
 
 
+@api_view(['POST'])
+def add_review(request, car_id):
+    data = request.data
+    data['CarSold_id'] = car_id
+    serializer = ReviewSerializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 @method_decorator(csrf_exempt, name='dispatch')
 class MessageView(View):
     def post(self, request):
@@ -133,12 +141,24 @@ class MessageView(View):
         message = Message.objects.create(**data)
         return JsonResponse({'message': message.id})
 
+@method_decorator(csrf_exempt, name='dispatch')
 class ReviewView(View):
-    def post(self, request):
+    def post(self, request, car_id=None):
         data = json.loads(request.body)
-        review = Review.objects.create(**data)
-        return JsonResponse({'review': review.id})
+        if car_id is not None:
+            data['CarSold_id'] = car_id
+        serializer = ReviewSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def get(self, request, car_id=None):
+        if car_id is not None:
+            reviews = Review.objects.filter(CarSold_id=car_id)
+            serializer = ReviewSerializer(reviews, many=True)
+            return JsonResponse(serializer.data, safe=False)
+        return JsonResponse({'error': 'Missing car_id'}, status=400)
 class CarView(View):
     def post(self, request):
         data = json.loads(request.body)

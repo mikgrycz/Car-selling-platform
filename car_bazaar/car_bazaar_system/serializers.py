@@ -7,6 +7,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class CarSerializer(serializers.ModelSerializer):
+    Seller = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     class Meta:
         model = Car
         fields = '__all__'
@@ -32,6 +33,9 @@ class SuperUserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ReviewSerializer(serializers.ModelSerializer):
+    Reviewer = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    CarSold = serializers.PrimaryKeyRelatedField(queryset=Car.objects.all())
+
     class Meta:
         model = Review
         fields = '__all__'
