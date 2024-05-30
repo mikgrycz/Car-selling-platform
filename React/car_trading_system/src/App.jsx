@@ -306,10 +306,10 @@ function AddReview() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const response = await axios.post(`http://localhost:8000/reviews`, {
+    const response = await axios.post(`http://localhost:8000/reviews/`, {
       Rating: rating,
       Comment: review,
-      ReviewerID: 1,
+      Reviewer: 1,
       CarSoldID: id
     });
 
