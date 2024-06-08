@@ -17,7 +17,7 @@ import './App.css';
         BodyType: ''
     });
     const [selectedFile, setSelectedFile] = useState(null);
-
+    const [estimate, setEstimate] = useState(null);
     const handleFileChange = (event) => {
         if (event.target.files && event.target.files[0]) {
         const file = event.target.files[0];
@@ -34,60 +34,80 @@ import './App.css';
         setCar({ ...car, [event.target.name]: event.target.value });
     };
 
+    const handleEstimate = async () => {
+      const newCar =  {
+        Make: car.Make,
+        Model: car.Model,
+        Year: parseInt(car.Year),
+        Price: parseInt(car.Price),
+        Mileage: parseInt(car.Mileage),
+        Description: car.Description,
+        BodyType: car.BodyType,
+      };
+      try {
+          const response = await axios.post('http://localhost:8000/estimate/', newCar);
+          console.log('Response data:', response.data);
+          const estimatedCar = response.data;
+          ///setCar(estimatedCar);
+          setEstimate(estimatedCar.estimate);
 
+      }
+      catch (error) {
+          console.error(error);
+      }
+  };
 
 
     const handleSubmit = async (event) => {
-        event.preventDefault();
+      event.preventDefault();
+    
+      const newCar =  {
+          Make: car.Make,
+          Model: car.Model,
+          Year: parseInt(car.Year),
+          Price: parseInt(car.Price),
+          Mileage: parseInt(car.Mileage),
+          Description: car.Description,
+          Seller: 1,
+          PictureLink: " ",
+          BodyType: car.BodyType,
+          NumberOfReviews: 0,
+      };
+    
+      try {
+          // Post the new car to the database and get the response
+          const response = await axios.post('http://localhost:8000/cars/', newCar);
       
-        // Construct a new CarModel object
-        /*
-            CarID: Optional[int] = None
-    Make: str
-    Model: str
-    Year: int
-    Price: int
-    Mileage: int
-    Description: str
-    SellerID: int
-    PictureLink: str
-    BodyType: str
-        */
-        const newCar =  {
-            Make: car.Make,
-            Model: car.Model,
-            Year: parseInt(car.Year),
-            Price: parseInt(car.Price),
-            Mileage: parseInt(car.Mileage),
-            Description: car.Description,
-            Seller: 1,
-            PictureLink: " ",
-            BodyType: car.BodyType,
-            NumberOfReviews: 0,
-          };
+          // Log the response data
+          console.log('Response data:', response.data);
+    
+          // The response should include the posted car with its assigned ID
+          const postedCar = response.data;
       
-          console.log(newCar.data);
-
-          try {
-            // Post the new car to the database and get the response
-            const response = await axios.post('http://localhost:8000/cars/', newCar);
-        
-            // The response should include the posted car with its assigned ID
-            const postedCar = response.data;
-            postedCar.PictureLink = `\\CarData\\c${postedCar.CarID}\\c${postedCar.CarID}.png`;
-            // Now you can use postedCar, which includes the assigned ID
-            await axios.put(`http://localhost:8000/cars/${postedCar.CarID}/`, postedCar);
-            
-            await axios.post('http://localhost:8000/create-dir/', { dir: `c${postedCar.CarID}` });
-
-            console.log(postedCar);
-          } catch (error) {
-            console.error(error);
+          // Create the directory for the car
+          await axios.post('http://localhost:8000/create-dir/', { dir: `c${postedCar.CarID}` });
+      
+          // Upload the picture
+          if (selectedFile) {
+              const formData = new FormData();
+              formData.append('photo', selectedFile);
+      
+              await axios.post(`http://localhost:8000/cars/${postedCar.CarID}/upload_photo/`, formData, {
+                  headers: {
+                      'Content-Type': 'multipart/form-data'
+                  }
+              });
+      
+              // Update the PictureLink in the car object
+              postedCar.PictureLink = `\\CarData\\c${postedCar.CarID}\\c${postedCar.CarID}.png`;
+              await axios.put(`http://localhost:8000/cars/${postedCar.CarID}/`, postedCar);
           }
-
-        
+      
+          console.log(postedCar);
+      } catch (error) {
+          console.error(error);
+      }
     };
-
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
     <form onSubmit={handleSubmit} style={{ padding: '100px' }}>
@@ -124,13 +144,17 @@ import './App.css';
         <label className="form-label">Body Type</label>
         <input type="text" className="form-control" name="BodyType" value={car.BodyType} onChange={handleChange} />
       </div>
+      <button type="button" className="btn btn-primary button-space" onClick={handleEstimate}>Estimate</button>
+      
       <button type="submit" className="btn btn-primary">Submit</button>
         <br />
         <br />
         <br />
         <br />
         <br />
+
     </form>
+    {estimate && <p>Estimated value: {estimate}</p>}
     <div className='car-image-container-2'>
       <br />
       <br />

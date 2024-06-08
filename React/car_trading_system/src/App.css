@@ -127,6 +127,9 @@
   justify-content: space-between;
   width: 100%;
 }
+.button-space {
+  margin-right: 10px;
+}
 
 .car-image {
   width: 250px;  /* Adjust as needed */

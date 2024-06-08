@@ -3,8 +3,8 @@ from django.urls import path
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views import View
-from .models import Car, User, Message, Review, Transaction, SuperUser, Listing
-from .serializers import CarSerializer, UserSerializer, MessageSerializer, ReviewSerializer, TransactionSerializer, SuperUserSerializer
+from .models import Car, User, Message, Review, Transaction, SuperUser, Listing, Photo
+from .serializers import CarSerializer, UserSerializer, MessageSerializer, ReviewSerializer, TransactionSerializer, SuperUserSerializer, PhotoSerializer
 from rest_framework.decorators import api_view,  permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -18,7 +18,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 import json
 from rest_framework.parsers import JSONParser
-
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from django.core.files.images import ImageFile
 load_dotenv()
 
 def send_car_details(recipient_email):
@@ -225,3 +228,30 @@ class ListingView(View):
         data = json.loads(request.body)
         listing = Listing.objects.create(**data)
         return JsonResponse({'listing': listing.id})
+    
+@api_view(['POST'])
+def upload_photo(request, car_id):
+    car = get_object_or_404(Car, CarID=car_id)
+    photo_file = request.FILES['photo']
+    data = {'car': car.CarID, 'photo': photo_file}
+    serializer = PhotoSerializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class EstimateView(View):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        data = json.loads(request.body)
+        car = Car.objects.create(**data)
+        estimate = self.calculate_estimate(car)
+        return JsonResponse({'estimate': estimate})
+
+    def calculate_estimate(self, car):
+        # This is where you would calculate the estimate based on the car details.
+        # For now, I'll just return a placeholder value.
+        return 10000

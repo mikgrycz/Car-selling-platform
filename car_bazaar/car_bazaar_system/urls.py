@@ -20,10 +20,13 @@ from .views import (
     TransactionView,
     SuperUserView,
     ListingView,
-    CarDetailView
+    CarDetailView,
+    upload_photo,
+    EstimateView,
 )
 from .models import Car, User, Message, Review, Transaction, SuperUser, Listing
 urlpatterns = [
+    path('cars/<int:car_id>/upload_photo/', upload_photo, name='upload_photo'),
     #path('cars/', get_cars),
     path('cars/', CarView.as_view()),
    # path('users/', UserView.as_view()),    
@@ -47,6 +50,8 @@ urlpatterns = [
     path('superusers/', SuperUserView.as_view()),
     path('listings/', ListingView.as_view()),
     path('listings/<str:listing_id>/', ListingView.as_view()),
+    path('estimate/', EstimateView.as_view()),  
+
 ]
 
 # # Django URLs

@@ -1,5 +1,7 @@
 from django.db import models
-
+from PIL import Image
+from io import BytesIO
+from django.core.files.base import ContentFile
 class Car(models.Model):
     CarID = models.AutoField(primary_key=True)
     Make = models.CharField(max_length=255)
@@ -27,7 +29,24 @@ class Car(models.Model):
         self.Seller = Seller
         self.PictureLink = "../CarData/c" + str(CarID) + "/1.png"
         self.BodyType = BodyType
+def get_upload_to(instance, filename):
+    return 'c{0}/c{1}.png'.format(instance.car.CarID, instance.car.CarID)
 
+
+class Photo(models.Model):
+    car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='photos')
+    photo = models.ImageField(upload_to=get_upload_to)
+    def save(self, *args, **kwargs):
+        if self.photo:
+            # Open the uploaded image
+            img = Image.open(self.photo)
+            # Convert the image to PNG
+            output = BytesIO()
+            img.save(output, format='PNG')
+            output.seek(0)
+            # Change the imagefield value to be the newley modifed image value
+            self.photo = ContentFile(output.read(), '.png')
+        return super().save(*args, **kwargs)
 class User(models.Model):
     UserID = models.AutoField(primary_key=True)
     UserName = models.CharField(max_length=255)

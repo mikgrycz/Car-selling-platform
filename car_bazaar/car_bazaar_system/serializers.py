@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, Car, Transaction, RealTransaction, ProxyTransaction, SuperUser, Review, Message, Listing
+from .models import User, Car, Transaction, RealTransaction, ProxyTransaction, SuperUser, Review, Message, Listing, Photo
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -49,3 +49,9 @@ class ListingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Listing
         fields = '__all__'
+
+
+class PhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Photo
+        fields = ['car', 'photo']
