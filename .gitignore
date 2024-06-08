@@ -3,5 +3,9 @@ Scraper.py
 otomoto_listings.csv
 car_listings.csv
 output.html
+<<<<<<< HEAD
+=======
+.venv
+>>>>>>> e2a996b69be3baad6e9103dc219bad5f446b1aec
 myvenv
 ```

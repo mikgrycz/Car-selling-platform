@@ -60,24 +60,25 @@ import './App.css';
             Price: parseInt(car.Price),
             Mileage: parseInt(car.Mileage),
             Description: car.Description,
-            SellerID: 1,
+            Seller: 1,
             PictureLink: " ",
-            BodyType: car.BodyType
+            BodyType: car.BodyType,
+            NumberOfReviews: 0,
           };
       
           console.log(newCar.data);
 
           try {
             // Post the new car to the database and get the response
-            const response = await axios.post('http://localhost:8000/cars', newCar);
+            const response = await axios.post('http://localhost:8000/cars/', newCar);
         
             // The response should include the posted car with its assigned ID
             const postedCar = response.data;
             postedCar.PictureLink = `\\CarData\\c${postedCar.CarID}\\c${postedCar.CarID}.png`;
             // Now you can use postedCar, which includes the assigned ID
-            await axios.put(`http://localhost:8000/cars/${postedCar.CarID}`, postedCar);
+            await axios.put(`http://localhost:8000/cars/${postedCar.CarID}/`, postedCar);
             
-            await axios.post('http://localhost:8000/create-dir', { dir: `c${postedCar.CarID}` });
+            await axios.post('http://localhost:8000/create-dir/', { dir: `c${postedCar.CarID}` });
 
             console.log(postedCar);
           } catch (error) {
