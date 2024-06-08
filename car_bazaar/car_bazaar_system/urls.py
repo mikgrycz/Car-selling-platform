@@ -20,12 +20,15 @@ from .views import (
     TransactionView,
     SuperUserView,
     ListingView,
+    CarDetailView
 )
 from .models import Car, User, Message, Review, Transaction, SuperUser, Listing
 urlpatterns = [
-    #path('cars/', CarView.as_view()),
+    #path('cars/', get_cars),
+    path('cars/', CarView.as_view()),
    # path('users/', UserView.as_view()),    
-    path('cars/', get_cars),
+    path('cars/<int:CarID>/', CarDetailView.as_view()),
+
     path('car/<str:car_id>/', get_car),
     path('api/login/', login),
     path('users/', get_users),

@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import joblib
 #import matplotlib.pyplot as plt
 import tensorflow as tf
 from tensorflow import keras
@@ -29,12 +30,19 @@ print(f"nan rows={nan_rows}")
 # remove duplicate records by ID
 
 # drop empty rows
-le = LabelEncoder()
+encoders = {}
 for col in ['brand', 'model', 'transmission', 'bodytype', 'colour']:
+    le = LabelEncoder()
     le.fit(data[col])
     data[col] = le.transform(data[col])
-data = data.dropna(how='all')
+    encoders[col] = le  # Store the fitted encoder
 
+print(encoders['brand'].classes_)
+print(encoders['model'].classes_)
+print("kerfrtigitrfuiorhefiuhreiuf3rioue4925629456938563928659265426598235986249853289572839758272")
+
+data = data.dropna(how='all')
+joblib.dump(encoders, 'encoders.pkl')
 # there is a column price and column currency, we need to convert the price to a single currency PLN
 print(data['currency'].unique())
 data['price'] = data['price'].str.replace(' ', '')
@@ -88,7 +96,7 @@ print(y.shape)
 print("1111111")
 scaler = StandardScaler()
 x = scaler.fit_transform(x)
-
+joblib.dump(scaler, 'scaler.pkl')
 #data = pd.DataFrame(data)
 
 #print(data.columns)
@@ -105,10 +113,12 @@ model_1 = linear_model.LinearRegression()
 model_1.fit(x_train, y_train)
 pred_train = model_1.predict(x_train)
 pred_test = model_1.predict(x_test)
-print(f'Linear regression RMSE on train: {mean_squared_error(y_train, pred_train, squared=False)}, RMSE on test: {mean_squared_error(y_test, pred_test, squared=False)}')
+print(f'Linear regression RMSE on train: {mean_absolute_error(y_train, pred_train)}, RMSE on test: {mean_absolute_error(y_test, pred_test)}')
 
 
-model_2 = keras.Sequential([Dense(30, input_shape=[9], activation='softmax'),
+model_2 = keras.Sequential([Dense(80, input_shape=[9], activation='softmax'),
+                           Dense(70, activation='relu'),
+                           Dense(60, activation='relu'),
                            Dense(50, activation='relu'),
                            Dense(40, activation='relu'),
                            Dense(30, activation='relu'),
@@ -124,19 +134,19 @@ model_4 = keras.Sequential([Dense(7, input_shape=[9], activation='relu'),
                             Dense(6, activation='softmax'),
                             Dense(5, activation='relu'),
                             Dense(1)])
-models = [model_2, model_3, model_4]
-names = ['model_2', 'model_3', 'model_4']
+models = [model_2]#, model_3, model_4
+names = ['model_2']#, 'model_3', 'model_4'
 results = []
 print("training models: ")
 for i, model in enumerate(models):
     model.compile(optimizer='adam', loss='mean_squared_error',metrics=['mean_absolute_error'])
 
-    model.fit(x_train, y_train, epochs=1000, batch_size=300)
+    model.fit(x_train, y_train, epochs=500, batch_size=1000)
     pred_train = model.predict(x_train)
     pred_test = model.predict(x_test)
     #results.append(f'{model} RMSE on train: {mean_squared_error(y_test, pred_test, squared=False)},{model} RMSE on test: {mean_squared_error(y_train, pred_train, squared=False)}, accuracy {model.evaluate(x_test, y_test)}')
     results.append(f'MAE on train: {mean_absolute_error(y_train, pred_train)},  MAE on test: {mean_absolute_error(y_test, pred_test)}, model evaluation: {model.evaluate(x_test, y_test)}')
-    model.save(f'{names[i]}.h5')
+    model.save(f'{names[i]}.keras')
     
 print(f'##################################')
 for result in results:

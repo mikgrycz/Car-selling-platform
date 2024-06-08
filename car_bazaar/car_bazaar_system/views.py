@@ -5,7 +5,8 @@ from django.shortcuts import get_object_or_404
 from django.views import View
 from .models import Car, User, Message, Review, Transaction, SuperUser, Listing
 from .serializers import CarSerializer, UserSerializer, MessageSerializer, ReviewSerializer, TransactionSerializer, SuperUserSerializer
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,  permission_classes
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound
 from rest_framework import status
@@ -16,6 +17,8 @@ import os
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 import json
+from rest_framework.parsers import JSONParser
+
 load_dotenv()
 
 def send_car_details(recipient_email):
@@ -37,6 +40,7 @@ def send_car_details(recipient_email):
 
 # Refactored Django views
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def get_cars(request):
     cars = Car.objects.all()
     serializer = CarSerializer(cars, many=True)
@@ -110,13 +114,14 @@ def create_user(request):
 
 @api_view(['POST'])
 def create_dir(request):
-    dir = request.data.get('dir')
-    if dir:
+    data = json.loads(request.body)
+    dir = data.get('dir')
+    if dir is not None:
         dir_path = join('Public', 'CarData', dir)
         makedirs(dir_path, exist_ok=True)
-        return Response({'message': 'Directory created'}, status=status.HTTP_201_CREATED)
-    return Response({'message': 'Directory name is required'}, status=status.HTTP_400_BAD_REQUEST)
-
+        return JsonResponse({'message': 'Directory created'})
+    else:
+        return JsonResponse({'error': 'No directory specified'}, status=400)
 @api_view(['POST'])
 def buy_item(request, id):
     # Assuming 'send_car_details' is a function that sends an email with car details
@@ -143,6 +148,8 @@ class MessageView(View):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class ReviewView(View):
+    permission_classes = [AllowAny]
+
     def post(self, request, car_id=None):
         data = json.loads(request.body)
         if car_id is not None:
@@ -159,12 +166,40 @@ class ReviewView(View):
             serializer = ReviewSerializer(reviews, many=True)
             return JsonResponse(serializer.data, safe=False)
         return JsonResponse({'error': 'Missing car_id'}, status=400)
+@method_decorator(csrf_exempt, name='dispatch')
 class CarView(View):
+    permission_classes = [AllowAny]
+
     def post(self, request):
         data = json.loads(request.body)
+        seller_id = data.pop('Seller', None)
+        if seller_id is not None:
+            try:
+                seller = User.objects.get(pk=seller_id)
+            except User.DoesNotExist:
+                return JsonResponse({'error': 'User not found.'}, status=404)
+            data['Seller'] = seller
         car = Car.objects.create(**data)
-        return JsonResponse({'car': car.id})
+        return JsonResponse({'CarID': car.CarID})
+    def get(self, request, car_id=None):
+        cars = Car.objects.all()
+        serializer = CarSerializer(cars, many=True)
+        return JsonResponse(serializer.data, safe=False)
 
+@method_decorator(csrf_exempt, name='dispatch')
+class CarDetailView(View):
+    permission_classes = [AllowAny]
+
+    def put(self, request, CarID):
+        data = json.loads(request.body)
+        try:
+            car = Car.objects.get(CarID=CarID)
+        except Car.DoesNotExist:
+            return JsonResponse({'error': 'Car not found.'}, status=404)
+        for field, value in data.items():
+            setattr(car, field, value)
+        car.save()
+        return JsonResponse({'CarID': car.CarID})
 class TransactionView(View):
     def post(self, request):
         data = json.loads(request.body)
