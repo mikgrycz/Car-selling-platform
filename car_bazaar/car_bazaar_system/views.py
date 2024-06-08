@@ -22,6 +22,13 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.core.files.images import ImageFile
+import sys
+import pandas as pd
+sys.path.append(r'C:\Users\mikol\Desktop\informatyka_2021\sem5\wp\projekt')
+sys.path.append(r'C:\Users\mikol\Desktop\informatyka_2021\sem5\wp\projekt\model_2.keras')
+from Estimation import predict_car_price
+from tensorflow.keras.models import load_model
+
 load_dotenv()
 
 def send_car_details(recipient_email):
@@ -247,11 +254,26 @@ class EstimateView(View):
     permission_classes = [AllowAny]
     def post(self, request):
         data = json.loads(request.body)
-        car = Car.objects.create(**data)
+        seller_id = data.pop('Seller', None)
+        if seller_id is not None:
+            try:
+                seller = User.objects.get(pk=seller_id)
+            except User.DoesNotExist:
+                return JsonResponse({'error': 'User not found.'}, status=404)
+            data['Seller'] = seller
+        car = Car(**data)
         estimate = self.calculate_estimate(car)
-        return JsonResponse({'estimate': estimate})
+        if estimate is not None:
+            return JsonResponse({'estimate': estimate})
+        else:
+            return JsonResponse({'error': 'Could not calculate estimate.'}, status=500)
 
     def calculate_estimate(self, car):
-        # This is where you would calculate the estimate based on the car details.
-        # For now, I'll just return a placeholder value.
-        return 10000
+        # Create a DataFrame with the car's attributes
+        features = pd.DataFrame([[car.Make, car.Model, car.Year, car.Mileage, car.EngineSize, car.Power, car.Transmission, car.BodyType, 'Czarny']],
+                                columns=['brand', 'model', 'year', 'mileage', 'engine_volume', 'power', 'transmission', 'bodytype', 'colour'])
+        
+        # Call the predict_car_price function
+        estimate = predict_car_price(features)
+        
+        return int(estimate[0][0])

@@ -4,7 +4,7 @@ import './App.css';
 
 
     const AddCar = () => {
-    const [car, setCar] = useState({
+      const [car, setCar] = useState({
         CarID: 0,
         Make: '',
         Model: '',
@@ -14,7 +14,13 @@ import './App.css';
         Description: '',
         SellerID: 0,
         PictureLink: '',
-        BodyType: ''
+        BodyType: '',
+        NumberOfReviews: 0,
+        EngineSize: 2000,
+        Transmission: 'Automatic',
+        FuelType: 'Gasoline',
+        DriveType: 'RWD',
+        Power: 250,
     });
     const [selectedFile, setSelectedFile] = useState(null);
     const [estimate, setEstimate] = useState(null);
@@ -43,6 +49,13 @@ import './App.css';
         Mileage: parseInt(car.Mileage),
         Description: car.Description,
         BodyType: car.BodyType,
+        Seller: 1,
+        Transmission: car.Transmission,
+        FuelType: car.FuelType,
+        DriveType: car.DriveType,
+        EngineSize: car.EngineSize,
+        Power: car.Power
+
       };
       try {
           const response = await axios.post('http://localhost:8000/estimate/', newCar);
@@ -72,6 +85,12 @@ import './App.css';
           PictureLink: " ",
           BodyType: car.BodyType,
           NumberOfReviews: 0,
+          EngineSize: car.EngineSize,
+          Transmission: car.Transmission,
+          FuelType: car.FuelType,
+          DriveType: car.DriveType,
+          Power: car.Power
+
       };
     
       try {
@@ -144,9 +163,44 @@ import './App.css';
         <label className="form-label">Body Type</label>
         <input type="text" className="form-control" name="BodyType" value={car.BodyType} onChange={handleChange} />
       </div>
+      <div className="mb-3">
+          <label className="form-label">Color</label>
+          <input type="text" className="form-control" name="Color" value={car.Color} onChange={handleChange} />
+      </div>
+      <div className="mb-3">
+          <label className="form-label">Transmission</label>
+          <input type="text" className="form-control" name="Transmission" value={car.Transmission} onChange={handleChange} />
+      </div>
+      <div className="mb-3">
+          <label className="form-label">Fuel Type</label>
+          <input type="text" className="form-control" name="FuelType" value={car.FuelType} onChange={handleChange} />
+      </div>
+      <div className="mb-3">
+          <label className="form-label">Engine Size</label>
+          <input type="number" className="form-control" name="EngineSize" value={car.EngineSize} onChange={handleChange} />
+      </div>
+      <div className="mb-3">
+          <label className="form-label">Drive Type</label>
+          <input type="text" className="form-control" name="DriveType" value={car.DriveType} onChange={handleChange} />
+      </div>
+      <div className="mb-3">
+          <label className="form-label">Power</label>
+          <input type="number" className="form-control" name="Power" value={car.Power} onChange={handleChange} />
+      </div>      
       <button type="button" className="btn btn-primary button-space" onClick={handleEstimate}>Estimate</button>
       
       <button type="submit" className="btn btn-primary">Submit</button>
+        <div style={{ 
+            backgroundColor: 'darkgrey', 
+            color: 'white', 
+            fontWeight: 'bold', 
+            padding: '10px', 
+            marginTop: '20px', 
+            textAlign: 'center',
+            borderRadius: '5px'
+        }}>
+            {estimate && `Estimated value: ${estimate}`}
+        </div>        
         <br />
         <br />
         <br />
@@ -154,7 +208,6 @@ import './App.css';
         <br />
 
     </form>
-    {estimate && <p>Estimated value: {estimate}</p>}
     <div className='car-image-container-2'>
       <br />
       <br />

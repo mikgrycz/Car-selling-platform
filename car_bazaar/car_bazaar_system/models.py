@@ -14,6 +14,12 @@ class Car(models.Model):
     PictureLink = models.CharField(max_length=255)
     BodyType = models.CharField(max_length=255)
     NumberOfReviews = models.IntegerField(default=0)
+    EngineSize = models.IntegerField(default=2000)
+    Transmission = models.CharField(max_length=255, default="Automatic")
+    FuelType = models.CharField(max_length=255, default="Gasoline")
+    DriveType = models.CharField(max_length=255, default="RWD")
+    Power = models.IntegerField(default=250)
+
 
     def GetCarDetails(self):
         print("CarID: " + str(self.CarID) + "\nMake: " + self.Make + "\nModel: " + self.Model + "\nYear: " + str(self.Year) + "\nPrice: " + str(self.Price) + "\nMileage: " + str(self.Mileage) + "\nDescription: " + self.Description + "\nSellerID: " + str(self.Seller.id) + "\n")
