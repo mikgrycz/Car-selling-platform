@@ -34,8 +34,8 @@ Car Bazaar is a car trading system that allows users to buy and sell cars online
 
 ![Car Screen](car_screen.png)
 
-![Review Screen](review_screen.png)
-
+![Add car 1](listing_1.png)
+![Add car 2](listing_2.png)
 ## Features
 
 - Multi car view
