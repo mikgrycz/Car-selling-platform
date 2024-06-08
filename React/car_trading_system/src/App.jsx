@@ -61,9 +61,18 @@ function CarSorterAndGrid() {
   };
 
   useEffect(() => {
-    fetch('http://localhost:8000/cars')  // Update with your server's URL
-      .then(response => response.json())
-      .then(data => setCars(data.cars));
+    fetch('http://localhost:8000/cars/')  // Update with your server's URL
+      .then(response => {
+        console.log('Response:', response);
+        return response.json();
+      })
+      .then(data => {
+        console.log('Data:', data);
+        setCars(data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   }, []);
 
   const filteredCars = cars.filter(car => {
@@ -189,22 +198,22 @@ function CarSorterAndGrid() {
   </div>
 
   <div className="mb-3 flex-grow-1" style={{ minWidth: '200px' }}>
-  <label>Min Mileage: </label>
+  <label style={{ marginRight: '10px' }}>Min Mileage: </label>
   <input className="input-field" type="number" min="0" max="1000000000" value={minPrice} onChange={handleMinMileageChange} />
 </div>
 
 <div className="mb-3 flex-grow-1" style={{ minWidth: '200px' }}>
-  <label>Max Mileage: </label>
-  <input className="input-field" type="number" min="0" max="1000000000" value={maxPrice} onChange={handleMaxMileageChange} />
+<label style={{ marginRight: '10px' }}>Max Mileage: </label>
+<input className="input-field" type="number" min="0" max="1000000000" value={maxPrice} onChange={handleMaxMileageChange} />
 </div>
 
   <div className="mb-3 flex-grow-1" style={{ minWidth: '200px' }}>
-  <label>Min Price: </label>
+  <label style={{ marginRight: '10px' }}>Min Price: </label>
   <input className="input-field" type="number" min="0" max="1000000000" value={minPrice} onChange={handleMinPriceChange} />
 </div>
 
 <div className="mb-3 flex-grow-1" style={{ minWidth: '200px' }}>
-  <label>Max Price: </label>
+<label style={{ marginRight: '10px' }}>Max Price: </label>
   <input className="input-field" type="number" min="0" max="1000000000" value={maxPrice} onChange={handleMaxPriceChange} />
 </div>
   <div className="mb-3 flex-grow-1">
@@ -297,11 +306,11 @@ function AddReview() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const response = await axios.post(`http://localhost:8000/reviews`, {
+    const response = await axios.post(`http://localhost:8000/reviews/`, {
       Rating: rating,
       Comment: review,
-      ReviewerID: 1,
-      CarSoldID: id
+      Reviewer: 1,
+      CarSold: id
     });
 
     console.log(response.data);
@@ -359,7 +368,7 @@ function CarGrid() {
   const [cars, setCars] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:8000/cars')  // Update with your server's URL
+    fetch('http://localhost:8000/cars/')  // Update with your server's URL
       .then(response => response.json())
       .then(data => setCars(data.cars));
   }, []);
@@ -489,7 +498,7 @@ return (
     <div>
       <nav className="navbar navbar-custom">
         <div className="container-fluid">
-        <Link to="/">
+        <Link to="/" style={{ textDecoration: 'none' }}>
           <h1 className="logo">Car <br></br> Bazaar</h1>
         </Link>
           <a className="navbar-brand" href="#"></a>
