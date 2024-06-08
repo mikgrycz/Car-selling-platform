@@ -44,19 +44,23 @@ Car Bazaar is a car trading system that allows users to buy and sell cars online
 - Leaving reviews
 - Car listings sorting
 - Server structure
-- DB connection
+- DB connection (sqlite is the engine)
 - Main screen displaying car listings
 - Adding new cars
+- Car price prediction based on a custom neural network.
 
 ## Installation
 
-### Prerequisites
+### Prerequisites 
 
 - Python 3.9 or higher
 - React.js 17.0.2 or higher
 - MySQL 8.0.25 or higher
 - Node.js 14.17.1 or higher
 - npm 6.14.13 or higher
+- Tensorflow 2
+
+
 
 ### Backend
 
@@ -69,25 +73,24 @@ git clone https://github.com/mikgrycz/Car-selling-platform.git
 - Create and activate a virtual environment
 
 ```bash
-cd car-bazaar
+cd .\Car-selling-platform\
 python -m venv venv
-source venv/bin/activate
+.\venv\Scripts\activate
 ```
 
 - Install the required dependencies
 
 ```bash
+cd .\Car-selling-platform\car_bazaar\
 pip install -r requirements.txt
 ```
-
-- Create a .env file with your secret keys
 
 ### Frontend
 
 - Install the required dependencies
 
 ```bash
-cd frontend
+cd .\Car-selling-platform\React\car_trading_system>
 npm install
 ```
 
@@ -98,19 +101,20 @@ npm install
 - Start the server
 
 ```bash
-uvicorn main:app --reload
+cd .\Car-selling-platform\car_bazaar\
+python manage.py runserver
 ```
 
 - By default the server will be running on http://localhost:8000
+  and the client on http://localhost:3000
 
-- You can access the API documentation on http://localhost:8000/docs or http://localhost:8000/redoc
 
 ### Running the client
 
 - Start the client
 
 ```bash
-cd frontend
+cd .\Car-selling-platform\React\car_trading_system\
 npm start
 ```
 
