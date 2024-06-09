@@ -13,7 +13,22 @@ def predict_car_price(features):
     scaler = joblib.load(os.path.join(dir_path, 'scaler.pkl'))
 
     for col in ['brand', 'model', 'transmission', 'bodytype', 'colour']:
-        features[col] = encoders[col].transform(features[col])
+        try:
+            features[col] = encoders[col].transform(features[col])
+        except Exception as e:
+            if col == 'brand':
+                features[col] = 'Volkswagen'
+            elif col == 'model':
+                features[col] = "Golf"
+            elif col == 'transmission':
+                features[col] = 'Automatyczna'
+            elif col == 'bodytype':
+                features[col] = 'Sedan'
+            elif col == 'colour':
+                features[col] = 'Czarny'
+            features[col] = encoders[col].transform(features[col])
+
+
 
     cols = ['year', 'mileage', 'engine_volume', 'power']
     for col in cols:
@@ -31,7 +46,7 @@ def predict_car_price(features):
 
     return prediction
 
-# Test the function
+# Example how to manually test the function
 features = pd.DataFrame([['Ford', 'Mustang', 2019, '123971', '5038', 450, 'Automatyczna', 'Kabriolet', 'Biały']],
                         columns=['brand', 'model', 'year', 'mileage', 'engine_volume', 'power', 'transmission', 'bodytype', 'colour'])
 print(predict_car_price(features))
