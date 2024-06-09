@@ -11,9 +11,15 @@ import category_encoders as ce
 from sklearn.metrics import mean_absolute_error
 from sklearn.preprocessing import OneHotEncoder, StandardScaler, LabelEncoder
 from sklearn.metrics import mean_squared_error
+import os
+# Get the directory of the current script
+current_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Load the data
-data = pd.read_csv("car_listings.csv")
+# Construct the path to the CSV file
+csv_file = os.path.join(current_dir, 'car_listings.csv')
+
+# Read the CSV file
+data = pd.read_csv(csv_file)
 
 # Print the column names and the shape of the data
 print(data.columns)

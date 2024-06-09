@@ -24,9 +24,15 @@ from rest_framework import status
 from django.core.files.images import ImageFile
 import sys
 import pandas as pd
-sys.path.append(r'C:\Users\mikol\Desktop\informatyka_2021\sem5\wp\projekt')
-sys.path.append(r'C:\Users\mikol\Desktop\informatyka_2021\sem5\wp\projekt\model_2.keras')
-from Estimation import predict_car_price
+# Get the directory of the current script
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Append the parent directory to sys.path
+sys.path.append(os.path.join(current_dir, '..'))
+
+# Append the 'model_2.keras' directory to sys.path
+sys.path.append(os.path.join(current_dir, '..', 'model_2.keras'))
+from .Estimation import predict_car_price
 from tensorflow.keras.models import load_model
 
 load_dotenv()

@@ -46,7 +46,11 @@ def predict_car_price(features):
 
     return prediction
 
+
+
+
 # Example how to manually test the function
-features = pd.DataFrame([['Ford', 'Mustang', 2019, '123971', '5038', 450, 'Automatyczna', 'Kabriolet', 'Biały']],
-                        columns=['brand', 'model', 'year', 'mileage', 'engine_volume', 'power', 'transmission', 'bodytype', 'colour'])
-print(predict_car_price(features))
+# features = pd.DataFrame([['Ford', 'Mustang', 2019, '123971', '5038', 450, 'Automatyczna', 'Kabriolet', 'Biały']],
+#                         columns=['brand', 'model', 'year', 'mileage', 'engine_volume', 'power', 'transmission', 'bodytype', 'colour'])
+#get_input()
+

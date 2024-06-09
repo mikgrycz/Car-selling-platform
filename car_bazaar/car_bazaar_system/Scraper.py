@@ -14,6 +14,13 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
+import os
+
+# Get the directory of the current script
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Construct the path to the CSV file
+csv_file = os.path.join(current_dir, 'car_listings.csv')
 # Initialize an empty list to store the records
 records = []
 
@@ -32,7 +39,7 @@ def tag_filter2(tag):
 LINK1 = os.getenv("LINK1")
 LINK2 = os.getenv("LINK2")
 # Loop over a range of numbers
-for i in range(1, 10):
+for i in range(1, 2):
     try:
         # Construct the URL
         url = f'{LINK1}{i}'
@@ -61,7 +68,7 @@ for i in range(1, 10):
 
         # Remove duplicates from the list of URLs
         urls = list(set(urls))
-
+        urls = urls[:1]
         # Print the number of URLs
         print(f'Number of urls: {len(urls)}')
 
@@ -148,7 +155,7 @@ for i in range(1, 10):
         driver.quit()
         records = []
         continue
-    with open('car_listings.csv', 'a', encoding='utf-8') as f_object:
+    with open(csv_file, 'a', encoding='utf-8') as f_object:
         writer_object = writer(f_object)
         for record in records:
             writer_object.writerow(record)
