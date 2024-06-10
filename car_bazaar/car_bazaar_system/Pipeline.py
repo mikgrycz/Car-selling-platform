@@ -162,7 +162,6 @@ pred_train = model_1.predict(x_train)
 pred_test = model_1.predict(x_test)
 
 # Print the RMSE of the model on the training and testing sets
-print(f'Linear regression RMSE on train: {mean_absolute_error(y_train, pred_train)}, RMSE on test: {mean_absolute_error(y_test, pred_test)}')
 model_2 = keras.Sequential([Dense(80, input_shape=[9], activation='softmax'),
                            Dense(70, activation='relu'),
                            Dense(60, activation='relu'),
@@ -200,7 +199,7 @@ for i, model in enumerate(models):
     pred_test = model.predict(x_test)
 
     # Append the model's performance metrics to the results list
-    results.append(f'MAE on train: {mean_absolute_error(y_train, pred_train)},  MAE on test: {mean_absolute_error(y_test, pred_test)}, model evaluation: {model.evaluate(x_test, y_test)}')
+    results.append(f'MAE on train: {mean_absolute_error(y_train, pred_train)},  MAE on test: {mean_absolute_error(y_test, pred_test)}')
 
     # Save the trained model to a file
     model.save(f'{names[i]}.keras')
@@ -209,6 +208,7 @@ for i, model in enumerate(models):
 print(f'##################################')
 
 # Loop over each result in the results list
+print(f'Linear regression MSE on train: {mean_absolute_error(y_train, pred_train)}, MSE on test: {mean_absolute_error(y_test, pred_test)}')
 for result in results:
     # Print the result
     print(result)
