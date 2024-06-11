@@ -106,7 +106,6 @@ python manage.py runserver
 ```
 
 - By default the server will be running on http://localhost:8000
-  and the client on http://localhost:3000
 
 
 ### Running the client
@@ -120,6 +119,15 @@ npm start
 
 - By default he client will be running on http://localhost:3000
 
+### Testing the ML model of car price prediction
+- The easiest way to test the model is through the app's GUI: Log in using login: Mikolaj and password: Mikolaj, 
+click the button 'Add a new car', enter your features of choice and click Estimate at the bottom (as in the picture above).
+- Another way:
+```bash
+cd .\Car-selling-platform\car_bazaar\car_bazaar_system\
+python Cmd_estimate.py
+```
+and follow the script's guidance to input the desired features
 
 
 ![GitHub stars](https://img.shields.io/github/stars/mikgrycz/Car-selling-platform?style=social)
