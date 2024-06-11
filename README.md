@@ -55,12 +55,8 @@ Car Bazaar is a car trading system that allows users to buy and sell cars online
 
 - Python 3.9 or higher
 - React.js 17.0.2 or higher
-- MySQL 8.0.25 or higher
 - Node.js 14.17.1 or higher
 - npm 6.14.13 or higher
-- Tensorflow 2
-
-
 
 ### Backend
 
