@@ -3,4 +3,7 @@ otomoto_listings.csv
 output.html
 .venv
 myvenv
+__pycache__
+.venv
+myvenv
 ```
