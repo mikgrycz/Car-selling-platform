@@ -54,7 +54,7 @@ Car Bazaar is a car trading system that allows users to buy and sell cars online
 ### Prerequisites 
 
 - Python 3.9 or higher
-- React.js 17.0.2 or higher
+- React.js 17.0.2 or higher~
 - Node.js 14.17.1 or higher
 - npm 6.14.13 or higher
 
@@ -124,6 +124,39 @@ cd .\Car-selling-platform\car_bazaar\car_bazaar_system\
 python Cmd_estimate.py
 ```
 and follow the script's guidance to input the desired features
+
+### Used design patterns
+
+- **Model–View–Controller (MVC)** 
+  Model → Model, View → Template, Controller → View function/class. Separates concerns for maintainability and clarity.
+  - Model (Car, Photo, User, Transaction)
+  - View (React FE)
+  - Controller (views.py: get_car, add_user, get_users, get_reviews)
+  
+- **Data Transfer Object (DTO)**  
+  Serializers transfer data across API boundaries.  
+  - UserSerializer, CarSerializer, PhotoSerializer, ReviewSerializer 
+
+- **Identity Field**  
+  Primary key (`id`, `AutoField`, `UUIDField`) uniquely identifies each entity.
+  - Car(id), User(id), Review(id)
+
+- **Foreign Key Mapping** 
+  - Car, Review, Listing
+  
+- **Front Controller**   
+  `urls.py` routes all HTTP requests.  
+
+- **Lazy Load**  
+  Related objects are loaded only when accessed (`obj.foreignkey`). Prevents unnecessary queries and improves performance.
+  - Car, Review, Listing
+  
+- **Value Object** 
+  Immutable value types like `datetime`, `Decimal`, custom fields, money objects.
+
+- **Row Data Gateway** 
+  Each model instance maps to one database row (`save()`, `delete()`).
+
 
 
 ![GitHub stars](https://img.shields.io/github/stars/mikgrycz/Car-selling-platform?style=social)
